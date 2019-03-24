@@ -1,4 +1,4 @@
-
+import  Data.List.Split (splitOn)
 -- represents a single figure of chess
 -- it gets a char for the player, and a position (x,y)
 data Figure = Peasant
@@ -31,7 +31,6 @@ getFigsForPlayer b d = filter (\(ChessFigure a b c) -> d == c) b
 
 instance Show ChessFigure where 
     show c = "("++show (typ c) ++ "," ++ show (pos c) ++ "," ++ [(p c)] ++")"
-
 
 movePattern :: Figure -> Char -> [Pos]
 movePattern f t = 
@@ -71,6 +70,14 @@ canAttack a b = p a == p b
 -- Towers, Queens and Bishops cannot "push through" an enemy. They're movements are limited when they "hit" an enemy
 isStopped :: ChessFigure -> Board -> Bool
 isStopped = undefined
+
+collision :: [Pos] -> ChessFigure -> [Pos]
+collision [] _ = []
+collision l (ChessFigure _ cp c)
+    | not (cp `elem` l) = l 
+    | otherwise = head l'
+        where l' = splitOn [cp] l 
+
 
 moveTo :: ChessFigure -> Pos -> ChessFigure
 moveTo f t = ChessFigure {typ = (typ f),pos=t,p=(p f)}
