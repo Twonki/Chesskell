@@ -1,4 +1,6 @@
 import  Data.List.Split (splitOn)
+import  Data.List(minimumBy)
+import  Data.Function (on)
 -- represents a single figure of chess
 -- it gets a char for the player, and a position (x,y)
 data Figure = Peasant
@@ -60,9 +62,6 @@ validMoves f b = map (:b') allnewPos
         boardMoves = filter (\t -> onBoard t) allMoves
         allnewPos = map (moveTo f) boardMoves
 
-onBoard :: Pos -> Bool 
-onBoard (x,y) = elem x [1..8] && elem y [1..8]
-
 -- A Chessfigure can move "onto" another Chessfigure if it has a different colour
 canAttack :: ChessFigure -> ChessFigure -> Bool
 canAttack a b = p a == p b
@@ -81,6 +80,66 @@ collision l (ChessFigure _ cp c)
 
 moveTo :: ChessFigure -> Pos -> ChessFigure
 moveTo f t = ChessFigure {typ = (typ f),pos=t,p=(p f)}
+
+-- ===========================================
+-- Movement Area
+-- ===========================================
+
+-- Predicat whether the Pos is on the ChessBoard
+onBoard :: Pos -> Bool 
+onBoard (x,y) = elem x reach && elem y reach
+
+reach :: [Int] 
+reach = [1..8]
+reach' :: [Pos]
+reach' = zipWith (,) reach reach
+
+-- All positions moving 0 +
+ups :: Pos -> [Pos]
+ups (x,y) = map (\i->(x,y+i)) reach
+
+-- All positions moving 0 - 
+downs :: Pos -> [Pos] 
+downs (x,y) = map (\i->(x,y-i)) reach
+
+-- All Positions moving - 0
+lefts :: Pos -> [Pos]
+lefts (x,y) = map (\i->(x-i,y)) reach
+
+-- All positions moving + 0 
+rights :: Pos -> [Pos]
+rights (x,y) = map (\i->(x+i,y)) reach
+
+-- All Positions moving - +
+risingDigL :: Pos -> [Pos]
+risingDigL (x,y) = map (\(a,b)->(x-a,y+b)) reach'
+
+-- All Positions moving + +
+risingDigR :: Pos -> [Pos]
+risingDigR (x,y) = map (\(a,b)->(x+a,y+b)) reach'
+
+-- All positions moving - - 
+fallingDigL :: Pos -> [Pos]
+fallingDigL (x,y) = map (\(a,b)->(x-a,y-b)) reach'
+
+-- All positions moving + -  
+fallingDigR :: Pos -> [Pos]
+fallingDigR (x,y) = map (\(a,b)->(x+a,y-b)) reach'
+
+-- This function stops at (x,y) if it is in the positionlist
+-- The Point (x,y) is still included
+-- if (x,y) is not in the list, the list is returned
+stopAt :: [Pos] -> Pos -> [Pos]
+stopAt [] _ = []
+stopAt (x:xs) b = if x==b then [x] else x : stopAt xs b
+
+-- As there cannot be two items on the same spot
+-- It's enough to check every pos and get the shortest one
+stopAtNearest :: [Pos] -> [Pos] -> [Pos]
+stopAtNearest xs ss = minimumBy (compare`on`length) $ map (stopAt xs) ss
+
+--TODO on ChessLevel: I get now every reachable item, last step: Dropout the ones which are "friendly" with a simple filter
+--I can do this globally for every Unit
 
 
 initialBoard :: Board 
