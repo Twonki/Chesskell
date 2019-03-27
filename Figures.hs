@@ -1,8 +1,7 @@
 import  Data.List.Split (splitOn)
 import  Data.List(minimumBy)
 import  Data.Function (on)
--- represents a single figure of chess
--- it gets a char for the player, and a position (x,y)
+
 data Figure = Peasant
                 | Knight
                 | Bishop
@@ -39,12 +38,21 @@ instance Show ChessFigure where
 canAttack :: ChessFigure -> ChessFigure -> Bool
 canAttack a b = p a == p b
 
-moveTo :: ChessFigure -> Pos -> ChessFigure
-moveTo f t = ChessFigure {typ = (typ f),pos=t,p=(p f)}
+moveTo :: Board -> ChessFigure -> Pos -> Board
+moveTo b f p = (draw f p) : b''
+    where b' = filter (\n-> n /= f) b 
+          e  = getFigOnPos b' p
+          b'' = case e of 
+            Nothing -> b' 
+            Just e -> filter (\n-> n /= e) b'
 
+
+draw :: ChessFigure -> Pos -> ChessFigure
+draw f t = ChessFigure {typ = (typ f),pos=t,p=(p f)}
+            
 
 moves :: Board -> ChessFigure -> [Board]
-moves b fig@(ChessFigure t p c) =  map (:b') $ map (moveTo fig) possibleMoves
+moves b fig@(ChessFigure t p c) =  map (moveTo b fig) possibleMoves
     where b' = filter (\n-> n /= fig) b  
           takenPositions = map (\t->pos t) b
           filter' = (stopAtNearest takenPositions) . (filter onBoard)
@@ -59,6 +67,11 @@ moves b fig@(ChessFigure t p c) =  map (:b') $ map (moveTo fig) possibleMoves
               otherwise -> filter' $ peasantMoves p c
 
         --missing: Don't hit friends!
+        --missing: Peasants can only move diagonal if they can hit something
+
+allMoves :: Board -> Player -> [Board]
+allMoves b p = concat $ map (moves b) fs
+    where fs = getFigsForPlayer b p 
 -- ===========================================
 -- Core Movement Area
 -- ===========================================
