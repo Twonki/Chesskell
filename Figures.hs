@@ -12,11 +12,12 @@ data Figure = Peasant
                 deriving (Eq,Show,Read)
                             
 type Pos = (Int,Int)
+type Player = Char
 
 data ChessFigure = ChessFigure {
         typ :: Figure,
         pos :: Pos, 
-        p   :: Char
+        p   :: Player
     } deriving (Eq)
 
 type Board = [ChessFigure]
@@ -34,58 +35,35 @@ getFigsForPlayer b d = filter (\(ChessFigure a b c) -> d == c) b
 instance Show ChessFigure where 
     show c = "("++show (typ c) ++ "," ++ show (pos c) ++ "," ++ [(p c)] ++")"
 
-movePattern :: Figure -> Char -> [Pos]
-movePattern f t = 
-    case f of 
-         Knight -> [(dx,dy) | dx <-[1,(-1),2,(-2)] , dy <- [1,(-1),2,(-2)], distance dx dy==3]
-         King -> [(dx,dy) | dx <- [0,1,(-1)],dy <- [0,1,(-1)], distance dx dy == 1]
-         Tower -> zipWith (,) (cycle [0]) [-8..8] ++ zipWith (,) [-8..8] (cycle [0])
-         Bishop -> map (\n -> (n,n)) [-8..8] ++ map (\n -> (n,-n)) [-8..8]
-         Queen -> (movePattern Tower t) ++ (movePattern Bishop t) 
-         otherwise -> if t == 'w' 
-                      then [(0,-1),(-1,-1),(1,-1)] --White Peasants move down
-                      else [(0,1),(-1,1),(1,1)]    --Black Peasants move up
-    where distance a b = abs(a)+abs(b)
-
--- Makes a List of Boards which are reachable from the current Board
-nextBoards :: Board -> Char -> [Board]
-nextBoards b c = concat $ map (\n -> validMoves n b) b'
-            where b' = getFigsForPlayer b c
-
--- Performs for a single ChessFigure every possible move (filtered if they are valid)
-validMoves :: ChessFigure -> Board -> [Board]
-validMoves f b = map (:b') allnewPos  
-    where
-        b' = filter (\t-> t /= f) b  
-        (x,y) = pos f
-        allMoves = map (\(u,v)->(u+x,v+y)) $  movePattern (typ f) (p f)
-        boardMoves = filter (\t -> onBoard t) allMoves
-        allnewPos = map (moveTo f) boardMoves
-
 -- A Chessfigure can move "onto" another Chessfigure if it has a different colour
 canAttack :: ChessFigure -> ChessFigure -> Bool
 canAttack a b = p a == p b
 
--- Towers, Queens and Bishops cannot "push through" an enemy. They're movements are limited when they "hit" an enemy
-isStopped :: ChessFigure -> Board -> Bool
-isStopped = undefined
-
-collision :: [Pos] -> ChessFigure -> [Pos]
-collision [] _ = []
-collision l (ChessFigure _ cp c)
-    | not (cp `elem` l) = l 
-    | otherwise = head l'
-        where l' = splitOn [cp] l 
-
-
 moveTo :: ChessFigure -> Pos -> ChessFigure
 moveTo f t = ChessFigure {typ = (typ f),pos=t,p=(p f)}
 
+
+moves :: Board -> ChessFigure -> [Board]
+moves b fig@(ChessFigure t p c) =  map (:b') $ map (moveTo fig) possibleMoves
+    where b' = filter (\n-> n /= fig) b  
+          takenPositions = map (\t->pos t) b
+          filter' = (stopAtNearest takenPositions) . (filter onBoard)
+          routine = (concat . map filter' .  map ($p)) 
+          possibleMoves = 
+            case t  of  
+              Bishop -> routine [risingDigL,fallingDigR,risingDigR,fallingDigL]
+              Tower ->  routine [ups,downs,lefts,rights]
+              Queen ->  routine $ [ups,downs,lefts,rights] ++ [risingDigL,fallingDigR,risingDigR,fallingDigL]
+              King ->   routine [kingMoves]
+              Knight -> routine [knightMoves]
+              otherwise -> filter' $ peasantMoves p c
+
+        --missing: Don't hit friends!
 -- ===========================================
--- Movement Area
+-- Core Movement Area
 -- ===========================================
 
--- Predicat whether the Pos is on the ChessBoard
+-- Predicate whether the Pos is on the ChessBoard
 onBoard :: Pos -> Bool 
 onBoard (x,y) = elem x reach && elem y reach
 
@@ -133,9 +111,19 @@ stopAt (x:xs) b = if x==b then [x] else x : stopAt xs b
 stopAtNearest :: [Pos] -> [Pos] -> [Pos]
 stopAtNearest xs ss = minimumBy (compare`on`length) $ map (stopAt xs) ss
 
---TODO on ChessLevel: I get now every reachable item, last step: Dropout the ones which are "friendly" with a simple filter
---I can do this globally for every Unit
+knightMoves :: Pos -> [Pos]
+knightMoves (x,y) = [(x+dx,y+dy) | dx <-[1,(-1),2,(-2)] , dy <- [1,(-1),2,(-2)], distance' dx dy==3]
 
+kingMoves :: Pos -> [Pos]
+kingMoves (x,y) = [(x+dx,y+dy) | dx <- [0,1,(-1)],dy <- [0,1,(-1)], distance' dx dy == 1]
+
+peasantMoves :: Pos -> Player -> [Pos]
+peasantMoves (x,y) t = 
+    if t == 'w' 
+        then [(x,y-1),(x-1,y-1),(x+1,y-1)] --White Peasants move down
+        else [(x,y+1),(x-1,y+1),(x+1,y+1)]    --Black Peasants move up
+
+distance' a b = abs(a)+abs(b)
 
 initialBoard :: Board 
 initialBoard = 
