@@ -89,42 +89,37 @@ moveTo f t = ChessFigure {typ = (typ f),pos=t,p=(p f)}
 onBoard :: Pos -> Bool 
 onBoard (x,y) = elem x reach && elem y reach
 
-reach :: [Int] 
 reach = [1..8]
 reach' :: [Pos]
 reach' = zipWith (,) reach reach
 
+line ::(Pos->Pos->Pos) -> Pos -> [Pos]
+line f p = map (f p) reach' 
+
 -- All positions moving 0 +
 ups :: Pos -> [Pos]
-ups (x,y) = map (\i->(x,y+i)) reach
-
+ups = line (\(x,y)-> \(i,_)->(x,y+i))
 -- All positions moving 0 - 
 downs :: Pos -> [Pos] 
-downs (x,y) = map (\i->(x,y-i)) reach
-
+downs = line (\(x,y)-> \(i,_)->(x,y-i))
 -- All Positions moving - 0
 lefts :: Pos -> [Pos]
-lefts (x,y) = map (\i->(x-i,y)) reach
-
+lefts  = line (\(x,y)-> \(i,_)->(x-i,y))
 -- All positions moving + 0 
 rights :: Pos -> [Pos]
-rights (x,y) = map (\i->(x+i,y)) reach
-
+rights = line (\(x,y)-> \(i,_)->(x+i,y))
 -- All Positions moving - +
 risingDigL :: Pos -> [Pos]
-risingDigL (x,y) = map (\(a,b)->(x-a,y+b)) reach'
-
+risingDigL = line (\(x,y)-> \(a,b)->(x-a,y+b))
 -- All Positions moving + +
 risingDigR :: Pos -> [Pos]
-risingDigR (x,y) = map (\(a,b)->(x+a,y+b)) reach'
-
+risingDigR = line (\(x,y)-> \(a,b)->(x+a,y+b))
 -- All positions moving - - 
 fallingDigL :: Pos -> [Pos]
-fallingDigL (x,y) = map (\(a,b)->(x-a,y-b)) reach'
-
+fallingDigL = line (\(x,y)-> \(a,b)->(x-a,y-b)) 
 -- All positions moving + -  
 fallingDigR :: Pos -> [Pos]
-fallingDigR (x,y) = map (\(a,b)->(x+a,y-b)) reach'
+fallingDigR  = line (\(x,y)-> \(a,b)->(x+a,y-b))
 
 -- This function stops at (x,y) if it is in the positionlist
 -- The Point (x,y) is still included
