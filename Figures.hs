@@ -32,10 +32,13 @@ getFigsForPlayer b d = filter (\(ChessFigure a b c) -> d == c) b
 instance Show ChessFigure where 
     show c = "("++show (typ c) ++ "," ++ show (pos c) ++ "," ++ [(p c)] ++")"
 
-
+--Sets a Chessfigure to a new pos 
+-- Regardless whether it's allowed to perform this move or if there is anything
 draw :: ChessFigure -> Pos -> ChessFigure
 draw f t = ChessFigure {typ = (typ f),pos=t,p=(p f)}
-            
+
+takenPositions :: Board -> [Pos]
+takenPositions b = map (\t->pos t) b
 
 initialBoard :: Board 
 initialBoard = 
