@@ -12,11 +12,11 @@ import  CoreMovement
 canAttack :: ChessFigure -> ChessFigure -> Bool
 canAttack a b = p a /= p b
 
-moveTo :: Board -> ChessFigure -> Pos -> Board
+moveTo :: Board -> ChessFigure -> Pos -> Maybe Board
 moveTo b f p = 
         if attackable
-        then (draw f p) : b''
-        else b --Invalid Move - cannot hit there!
+        then Just $ (draw f p) : b''
+        else Nothing --Invalid Move - cannot hit there!
     where   b' = filter (\n-> n /= f) b 
             e  = getFigOnPos b' p
             attackable = case e of 
@@ -26,7 +26,7 @@ moveTo b f p =
                 Nothing -> b' 
                 Just e -> filter (\n-> n /= e) b'
             
-moves :: Board -> ChessFigure -> [Board]
+moves :: Board -> ChessFigure -> [Maybe Board]
 moves b fig@(ChessFigure t p c) =  map (moveTo b fig) possibleMoves
     where b' = filter (\n-> n /= fig) b   
           routine = concat . map (moveFilter b') .  map ($p) 
@@ -40,6 +40,7 @@ moves b fig@(ChessFigure t p c) =  map (moveTo b fig) possibleMoves
               otherwise -> moveFilter b $ peasantMoves p c
 
         --missing: Peasants can only move diagonal if they can hit something
+        --missing: Peasants can move 2 spaces if they are on their spawn
 
 -- stopAtNearest takes positions -> stoppers -> positions
 -- For my use it needs to be flipped
@@ -47,5 +48,11 @@ moveFilter :: Board -> [Pos] -> [Pos]
 moveFilter b = (flip stopAtNearest) (takenPositions b) . filter onBoard
 
 allMoves :: Board -> Player -> [Board]
-allMoves b p = concat $ map (moves b) fs
+allMoves b p = clearMaybeBoard (concat $ map (moves b) fs)
     where fs = getFigsForPlayer b p 
+
+clearMaybeBoard :: [Maybe Board] -> [Board]
+clearMaybeBoard [] = [] 
+clearMaybeBoard (x:xs) = case x of 
+        Just x -> x : clearMaybeBoard xs
+        Nothing -> clearMaybeBoard xs
