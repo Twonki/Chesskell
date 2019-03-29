@@ -28,9 +28,8 @@ moveTo b f p =
             
 moves :: Board -> ChessFigure -> [Board]
 moves b fig@(ChessFigure t p c) =  map (moveTo b fig) possibleMoves
-    where b' = filter (\n-> n /= fig) b
-          filter' = (stopAtNearest (takenPositions b')) . (filter onBoard)
-          routine = (concat . map filter' .  map ($p)) 
+    where b' = filter (\n-> n /= fig) b   
+          routine = concat . map (moveFilter b') .  map ($p) 
           possibleMoves = 
             case t  of  
               Bishop -> routine [risingDigL,fallingDigR,risingDigR,fallingDigL]
@@ -38,10 +37,14 @@ moves b fig@(ChessFigure t p c) =  map (moveTo b fig) possibleMoves
               Queen ->  routine $ [ups,downs,lefts,rights] ++ [risingDigL,fallingDigR,risingDigR,fallingDigL]
               King ->   routine [kingMoves]
               Knight -> routine [knightMoves]
-              otherwise -> filter' $ peasantMoves p c
+              otherwise -> moveFilter b $ peasantMoves p c
 
         --missing: Peasants can only move diagonal if they can hit something
 
+-- stopAtNearest takes positions -> stoppers -> positions
+-- For my use it needs to be flipped
+moveFilter :: Board -> [Pos] -> [Pos]            
+moveFilter b = (flip stopAtNearest) (takenPositions b) . filter onBoard
 
 allMoves :: Board -> Player -> [Board]
 allMoves b p = concat $ map (moves b) fs
