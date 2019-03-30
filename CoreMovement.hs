@@ -59,9 +59,16 @@ kingMoves :: Pos -> [Pos]
 kingMoves (x,y) = [(x+dx,y+dy) | dx <- [0,1,(-1)],dy <- [0,1,(-1)], distance' dx dy == 1]
 
 pawnMoves :: Pos -> Player -> [Pos]
-pawnMoves (x,y) t = 
-    if t == W 
-        then [(x,y-1),(x-1,y-1),(x+1,y-1)] --White Pawns move down
-        else [(x,y+1),(x-1,y+1),(x+1,y+1)] --Black Pawns move up
+pawnMoves (x,y) t = map (add (x,y)) $ filter (\x->jumpWidth x <= 2) $ (,) <$> [-1,0,1] <*> vert
+    where 
+        vert
+            | t == W && y == 2   = [1,2]
+            | t == W             = [1]
+            | t == B && y == 7   = [-1,-2]
+            | otherwise          = [-1]
+
+add (x,y) (a,b) = (x+a,y+b)
+
+jumpWidth (a,b) = distance' a b
 
 distance' a b = abs(a)+abs(b)

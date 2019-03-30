@@ -7,6 +7,7 @@ module Movement (
 import  Data.List.Split (splitOn)
 import  Figures
 import  CoreMovement
+import  Control.Monad (liftM)
 
 -- A Chessfigure can move "onto" another Chessfigure if it has a different colour
 canAttack :: ChessFigure -> ChessFigure -> Bool
