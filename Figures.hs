@@ -44,6 +44,9 @@ draw f t = ChessFigure {typ = (typ f),pos=t,player=(player f)}
 takenPositions :: Board -> [Pos]
 takenPositions b = map (\t->pos t) b
 
+hasKing :: [ChessFigure] -> Bool 
+hasKing = foldr (||) False . map (\(ChessFigure f _ _) -> f == King)
+
 initialBoard :: Board 
 initialBoard = 
     [ChessFigure Pawn (x,7) W | x <- [1..8]] 

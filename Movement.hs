@@ -56,3 +56,12 @@ clearMaybeBoard [] = []
 clearMaybeBoard (x:xs) = case x of 
         Just x -> x : clearMaybeBoard xs
         Nothing -> clearMaybeBoard xs
+
+check :: Board -> Player -> Bool
+check b p = foldr (||) False $ map (not . hasKing) myFigures
+    where   
+        enemyMoves = allMoves b $ changePlayer p 
+        myFigures = map (flip getFigsForPlayer p) enemyMoves
+
+checkmate :: Board -> Player -> Bool
+checkmate = undefined
