@@ -37,10 +37,10 @@ moves b fig@(ChessFigure t p c) =  map (moveTo b fig) possibleMoves
               Queen ->  routine $ [ups,downs,lefts,rights] ++ [risingDigL,fallingDigR,risingDigR,fallingDigL]
               King ->   routine [kingMoves]
               Knight -> routine [knightMoves]
-              otherwise -> moveFilter b $ peasantMoves p c
+              otherwise -> moveFilter b $ PawnMoves p c
 
-        --missing: Peasants can only move diagonal if they can hit something
-        --missing: Peasants can move 2 spaces if they are on their spawn
+        --missing: Pawns can only move diagonal if they can hit something
+        --missing: Pawns can move 2 spaces if they are on their spawn
 
 -- stopAtNearest takes positions -> stoppers -> positions
 -- For my use it needs to be flipped

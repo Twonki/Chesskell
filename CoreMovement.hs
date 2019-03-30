@@ -62,6 +62,6 @@ peasantMoves :: Pos -> Player -> [Pos]
 peasantMoves (x,y) t = 
     if t == 'w' 
         then [(x,y-1),(x-1,y-1),(x+1,y-1)] --White Peasants move down
-        else [(x,y+1),(x-1,y+1),(x+1,y+1)]    --Black Peasants move up
+        else [(x,y+1),(x-1,y+1),(x+1,y+1)] --Black Peasants move up
 
 distance' a b = abs(a)+abs(b)
