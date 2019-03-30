@@ -37,7 +37,7 @@ moves b fig@(ChessFigure t p c) =  map (moveTo b fig) possibleMoves
               Queen ->  routine $ [ups,downs,lefts,rights] ++ [risingDigL,fallingDigR,risingDigR,fallingDigL]
               King ->   routine [kingMoves]
               Knight -> routine [knightMoves]
-              otherwise -> moveFilter b $ PawnMoves p c
+              otherwise -> moveFilter b $ pawnMoves p c
 
         --missing: Pawns can only move diagonal if they can hit something
         --missing: Pawns can move 2 spaces if they are on their spawn
