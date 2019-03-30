@@ -27,7 +27,7 @@ moveTo b f p =
                 Just e -> filter (\n-> n /= e) b'
             
 moves :: Board -> ChessFigure -> [Maybe Board]
-moves b fig@(ChessFigure t p c) =  map (moveTo b fig) possibleMoves
+moves b fig@(ChessFigure t p c) = map (moveTo b fig) possibleMoves
     where b' = filter (\n-> n /= fig) b   
           routine = concat . map (moveFilter b') .  map ($p) 
           possibleMoves = 
@@ -48,7 +48,7 @@ moveFilter :: Board -> [Pos] -> [Pos]
 moveFilter b = (flip stopAtNearest) (takenPositions b) . filter onBoard
 
 allMoves :: Board -> Player -> [Board]
-allMoves b p = clearMaybeBoard (concat $ map (moves b) fs)
+allMoves b p = filter (flip check p) $ clearMaybeBoard (concat $ map (moves b) fs)
     where fs = getFigsForPlayer b p 
 
 clearMaybeBoard :: [Maybe Board] -> [Board]
@@ -64,4 +64,4 @@ check b p = foldr (||) False $ map (not . hasKing) myFigures
         myFigures = map (flip getFigsForPlayer p) enemyMoves
 
 checkmate :: Board -> Player -> Bool
-checkmate = undefined
+checkmate b p = [] == allMoves b p
