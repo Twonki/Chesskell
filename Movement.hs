@@ -10,7 +10,7 @@ import  CoreMovement
 
 -- A Chessfigure can move "onto" another Chessfigure if it has a different colour
 canAttack :: ChessFigure -> ChessFigure -> Bool
-canAttack a b = p a /= p b
+canAttack a b = player a /= player b
 
 moveTo :: Board -> ChessFigure -> Pos -> Maybe Board
 moveTo b f p = 

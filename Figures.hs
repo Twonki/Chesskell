@@ -14,7 +14,7 @@ data Player = W | B deriving (Eq,Show,Read)
 data ChessFigure = ChessFigure {
         typ :: Figure,
         pos :: Pos, 
-        p   :: Player
+        player   :: Player
     } deriving (Eq)
 
 type Board = [ChessFigure]
@@ -30,7 +30,7 @@ getFigsForPlayer :: Board -> Player -> [ChessFigure]
 getFigsForPlayer b d = filter (\(ChessFigure a b c) -> d == c) b
 
 instance Show ChessFigure where 
-    show c = "("++show (typ c) ++ "," ++ show (pos c) ++ "," ++ show (p c) ++")"
+    show c = "("++show (typ c) ++ "," ++ show (pos c) ++ "," ++ show (player c) ++")"
 
 changePlayer :: Player -> Player 
 changePlayer W = B 
@@ -39,7 +39,7 @@ changePlayer B = W
 --Sets a Chessfigure to a new pos 
 -- Regardless whether it's allowed to perform this move or if there is anything
 draw :: ChessFigure -> Pos -> ChessFigure
-draw f t = ChessFigure {typ = (typ f),pos=t,p=(p f)}
+draw f t = ChessFigure {typ = (typ f),pos=t,player=(player f)}
 
 takenPositions :: Board -> [Pos]
 takenPositions b = map (\t->pos t) b
