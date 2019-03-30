@@ -41,7 +41,6 @@ moves b fig@(ChessFigure t p c) = map (moveTo b fig) possibleMoves
               otherwise -> moveFilter b $ pawnMoves p c
 
         --missing: Pawns can only move diagonal if they can hit something
-        --missing: Pawns can move 2 spaces if they are on their spawn
 
 -- stopAtNearest takes positions -> stoppers -> positions
 -- For my use it needs to be flipped

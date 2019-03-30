@@ -1,12 +1,14 @@
 ## Contribution
 ### Branching Policy
-We are using a shrunk form of the common [Git Flow](https://www.git-tower.com/learn/git/ebook/en/desktop-gui/advanced-topics/git-flow).
+This Repo uses a shrunk form of the common [Git Flow](https://www.git-tower.com/learn/git/ebook/en/desktop-gui/advanced-topics/git-flow).
 
 The central repo holds two main branches with an infinite lifetime: **master** and **dev**.
 
 * The **master** branch is the branch where the source code always reflects a production-ready state.
 * The **dev**elop branch is the branch where the source code always reflects a state with the latest delivered development changes for the next release.
-Feature branches are used to develop new features for the upcoming release. They are derived from the issue board. Every feature-branch is always created from the dev branch and will solely be remerged into dev.
+Feature branches are used to develop new features for the upcoming release. 
+
+They are derived from the issue board. Every feature-branch is always created from the dev branch and will solely be remerged into dev.
 
 A feature-branch's lifetime should be as short as possible.
 
