@@ -12,8 +12,8 @@ The file *Game.hs* contains the toplevel entrypoint for playing the game and che
 
 The file *AllTests.hs* contains the toplevel entrypoint for running all tests at once. 
 
-The folder *tests* contain all tests, usually grouped by their functionality (not their src-file!). 
-The tests are written with HUnit and there is an additional *helper.hs* which simply puts all required visibilites in one import and enriches some helper functions. 
+The folder *Tests* contain all tests, usually grouped by their functionality (not their src-file!). 
+The tests are written with HUnit and there is an additional *TestSuite.hs* which simply puts all required visibilites in one import and enriches some helper functions. 
 
 The folder *src*: 
 * *Figures*: Contains the datatypes and some very basic operations on these datatypes. 

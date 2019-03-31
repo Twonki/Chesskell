@@ -1,7 +1,8 @@
 module Chess.Movement (
     module Chess.Figures,
     allMoves,
-    moves
+    moves,
+    clearMaybeBoard
 )where
 
 import  Data.List.Split (splitOn)

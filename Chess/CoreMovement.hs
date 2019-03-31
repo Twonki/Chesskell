@@ -63,10 +63,10 @@ pawnMoves :: Pos -> Player -> [Pos]
 pawnMoves (x,y) t = map (add (x,y)) $ filter (\x->jumpWidth x <= 2) $ (,) <$> [-1,0,1] <*> vert
     where 
         vert
-            | t == W && y == 2   = [1,2]
-            | t == W             = [1]
-            | t == B && y == 7   = [-1,-2]
-            | otherwise          = [-1]
+            | t == W && y == 7   = [-1,-2]
+            | t == W             = [-1]
+            | t == B && y == 2   = [1,2]
+            | otherwise          = [1]
 
 add (x,y) (a,b) = (x+a,y+b)
 jumpWidth (a,b) = distance' a b
