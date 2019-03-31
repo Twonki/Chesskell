@@ -51,6 +51,11 @@ hasKing = foldr (||) False . map (\(ChessFigure f _ _) -> f == King)
 canAttack :: ChessFigure -> ChessFigure -> Bool
 canAttack a b = player a /= player b
 
+-- i declare draw if there are exactly two kings left
+remie :: Board -> Bool 
+remie b = length b == 2 && hasKing b && hasKing b'
+    where (_:b') = b
+
 initialBoard :: Board 
 initialBoard = 
     [ChessFigure Pawn (x,7) W | x <- [1..8]] 
