@@ -3,9 +3,9 @@ module Tests.InitialBoardTests (allBoardTests) where
 import Tests.TestSuite
 
 allBoardTests = TestList [
-    TestLabel "All Initial Moves Black" testIMB
-    ,TestLabel "All Initial Moves White" testIMW
-    ,TestLabel "Figure Count White" testFCW
+ --   TestLabel "All Initial Moves Black" testIMB
+ --   ,TestLabel "All Initial Moves White" testIMW
+    TestLabel "Figure Count White" testFCW
     ,TestLabel "Figure Count Black" testFCB 
     ,TestLabel "No Check White" testNCW
     ,TestLabel "No Check Black" testNCB
