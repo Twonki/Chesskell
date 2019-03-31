@@ -13,7 +13,7 @@ import  Chess.CoreMovement
 import  Control.Monad (liftM)
 
 
-moveTo :: Board -> ChessFigure -> Pos -> Maybe Board
+moveTo :: Board -> Chesspiece -> Pos -> Maybe Board
 moveTo b f p = 
         if attackable
         then Just $ (draw f p) : b''
@@ -27,8 +27,8 @@ moveTo b f p =
                 Nothing -> b' 
                 Just e -> filter (\n-> n /= e) b'
             
-moves :: Board -> ChessFigure -> [Maybe Board]
-moves b fig@(ChessFigure t p c) = map (moveTo b fig) possibleMoves
+moves :: Board -> Chesspiece -> [Maybe Board]
+moves b fig@(Chesspiece t p c) = map (moveTo b fig) possibleMoves
     where b' = filter (\n-> n /= fig) b   
           routine = concat . map (moveFilter b') .  map ($p) 
           possibleMoves = 

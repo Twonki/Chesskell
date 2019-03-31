@@ -19,7 +19,7 @@ The folder *src*:
 * *Figures*: Contains the datatypes and some very basic operations on these datatypes. 
 * *CoreMovement*: Contains simple, board-unaware movements. The results of these movements will be later filtered. 
 * *Movement*: Contains advanced, board-aware movements. Also in this file is the *allMoves* Method and the *check* + *checkMate*
-* *Metrics*(ToBeDone): Contains different metrics to measure the value of a board
+* *Metrics*: Contains different metrics to measure the value of a board
 * *AI*(ToBeDone): Contains the alpha-beta pruning
 * *Game*(ToBeDone): Contains the game logic, putting all the pieces together and IO with the player.
 
