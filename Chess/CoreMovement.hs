@@ -1,9 +1,10 @@
-module CoreMovement where 
+module Chess.CoreMovement where 
 
-import Figures
+import Chess.Figures
 
 import  Data.List(minimumBy)
 import  Data.Function (on)
+
 -- Predicate whether the Pos is on the ChessBoard
 onBoard :: Pos -> Bool 
 onBoard (x,y) = elem x reach && elem y reach
@@ -68,7 +69,5 @@ pawnMoves (x,y) t = map (add (x,y)) $ filter (\x->jumpWidth x <= 2) $ (,) <$> [-
             | otherwise          = [-1]
 
 add (x,y) (a,b) = (x+a,y+b)
-
 jumpWidth (a,b) = distance' a b
-
 distance' a b = abs(a)+abs(b)

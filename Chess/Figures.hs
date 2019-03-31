@@ -1,4 +1,4 @@
-module Figures where 
+module Chess.Figures where 
 
 data Figure = Pawn
                 | Knight
@@ -46,6 +46,10 @@ takenPositions b = map (\t->pos t) b
 
 hasKing :: [ChessFigure] -> Bool 
 hasKing = foldr (||) False . map (\(ChessFigure f _ _) -> f == King)
+
+-- A Chessfigure can move "onto" another Chessfigure if it has a different colour
+canAttack :: ChessFigure -> ChessFigure -> Bool
+canAttack a b = player a /= player b
 
 initialBoard :: Board 
 initialBoard = 

@@ -1,17 +1,14 @@
-module Movement (
-    module Figures,
+module Chess.Movement (
+    module Chess.Figures,
     allMoves,
     moves
 )where
 
 import  Data.List.Split (splitOn)
-import  Figures
-import  CoreMovement
+import  Chess.Figures
+import  Chess.CoreMovement
 import  Control.Monad (liftM)
 
--- A Chessfigure can move "onto" another Chessfigure if it has a different colour
-canAttack :: ChessFigure -> ChessFigure -> Bool
-canAttack a b = player a /= player b
 
 moveTo :: Board -> ChessFigure -> Pos -> Maybe Board
 moveTo b f p = 

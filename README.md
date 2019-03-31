@@ -8,9 +8,9 @@ Further steps should include AI with the help of alpha-beta-pruning.
 
 This game is never made to be in a computational-competetive enviroment. It's rather about producing nice haskellcode and having some fun with the most expressive language :)
 ## Structure
-The file *runGame.hs* contains the toplevel entrypoint for playing the game and checking all it`s features. 
+The file *Game.hs* contains the toplevel entrypoint for playing the game and checking all it`s features. 
 
-The file *runTests.hs* contains the toplevel entrypoint for running all tests at once. 
+The file *AllTests.hs* contains the toplevel entrypoint for running all tests at once. 
 
 The folder *tests* contain all tests, usually grouped by their functionality (not their src-file!). 
 The tests are written with HUnit and there is an additional *helper.hs* which simply puts all required visibilites in one import and enriches some helper functions. 
