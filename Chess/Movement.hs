@@ -2,7 +2,9 @@ module Chess.Movement (
     module Chess.Figures,
     allMoves,
     moves,
-    clearMaybeBoard
+    clearMaybeBoard,
+    check,
+    checkmate
 )where
 
 import  Data.List.Split (splitOn)
