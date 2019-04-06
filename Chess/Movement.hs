@@ -1,5 +1,6 @@
 module Chess.Movement (
     module Chess.Figures,
+    validMoves,
     allMoves,
     moves,
     clearMaybeBoard,
@@ -47,8 +48,14 @@ moves b fig@(Chesspiece t p c) = map (moveTo b fig) possibleMoves
 moveFilter :: Board -> [Pos] -> [Pos]            
 moveFilter b = (flip stopAtNearest) (takenPositions b) . filter onBoard
 
+-- Filter every possible moves and only allowes the one where i´m not in check
+-- Required to kill a deadlock i produced with allmoves and check
+validMoves :: Board -> Player -> [Board]
+validMoves b p = filter (flip check p) $ (allMoves b p)
+
+-- Every reachable position, without check
 allMoves :: Board -> Player -> [Board]
-allMoves b p = filter (flip check p) $ clearMaybeBoard (concat $ map (moves b) fs)
+allMoves b p =  clearMaybeBoard (concat $ map (moves b) fs)
     where fs = getFigsForPlayer b p 
 
 clearMaybeBoard :: [Maybe Board] -> [Board]
