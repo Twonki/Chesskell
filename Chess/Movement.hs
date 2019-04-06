@@ -20,16 +20,18 @@ moveTo b f p =
         then Just $ (draw f p) : b''
         else Nothing --Invalid Move - cannot hit there!
     where   b' = filter (\n-> n /= f) b 
-            e  = getFigOnPos b' p
-            attackable = case e of 
-                Nothing -> True 
-                Just m -> canAttack f m
-            b'' = case e of 
-                Nothing -> b' 
-                Just e -> filter (\n-> n /= e) b'
+            other  = getFigOnPos b' p
+            attackable = case other of 
+                Nothing -> True --There is nothing, so i can move her
+                Just m -> canAttack f m -- there is something, i have to check if i can attack
+            b'' = case other of 
+                Nothing -> b' -- Nothing killed
+                Just other -> filter (\n-> n /= other) b' --I killed e
             
 moves :: Board -> Chesspiece -> [Maybe Board]
-moves b fig@(Chesspiece t p c) = map (moveTo b fig) possibleMoves
+moves b fig@(Chesspiece t p c) 
+    | t == Pawn = validPawnMoves b fig 
+    | otherwise = map (moveTo b fig) possibleMoves
     where b' = filter (\n-> n /= fig) b   
           routine = concat . map (moveFilter b') .  map ($p) 
           possibleMoves = 
@@ -39,9 +41,17 @@ moves b fig@(Chesspiece t p c) = map (moveTo b fig) possibleMoves
               Queen ->  routine $ [ups,downs,lefts,rights] ++ [risingDigL,fallingDigR,risingDigR,fallingDigL]
               King ->   routine [kingMoves]
               Knight -> routine [knightMoves]
-              otherwise -> moveFilter b $ pawnMoves p c
 
-        --missing: Pawns can only move diagonal if they can hit something
+validPawnMoves :: Board -> Chesspiece -> [Maybe Board]
+-- Input: current Board, Pawn 
+-- Used to filter allPawnMoves 
+-- Step 1: Get all Moves for Pawn
+-- Step 2: If i reach back-end, new Boards with lost figures
+-- for 2: check on y, get lost figures
+-- Step 3: Filter for hittibility
+-- 3.1 only move forward if nothing 
+-- 3.2 only move diagonal if hittable (check moves on x for diagonality)
+validPawnMoves = undefined
 
 -- stopAtNearest takes positions -> stoppers -> positions
 -- For my use it needs to be flipped
