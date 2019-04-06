@@ -47,5 +47,5 @@ agility b p
     | p == W = whiteMoves / blackMoves
     | p == B = blackMoves / whiteMoves
     where 
-        whiteMoves = fromIntegral $ length $ allMoves b W 
-        blackMoves = fromIntegral $ length $ allMoves b B 
+        whiteMoves = fromIntegral $ length $ validMoves b W 
+        blackMoves = fromIntegral $ length $ validMoves b B 

@@ -11,9 +11,9 @@ allBoardTests = TestList [
     ,TestLabel "No Check Black" testNCB
      ]
 -- 18 StartingMoves Black
-testIMB = 18 ~=? length (allMoves initialBoard B)
+testIMB = 18 ~=? length (validMoves initialBoard B)
 -- 18 StartingMoves White 
-testIMW = 18 ~=? length (allMoves initialBoard W)
+testIMW = 18 ~=? length (validMoves initialBoard W)
 -- 16 Starting Figures for White
 testFCW = 16 ~=? length (getFigsForPlayer initialBoard W)
 -- 16 Starting Figures for Black
