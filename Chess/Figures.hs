@@ -56,6 +56,13 @@ remie :: Board -> Bool
 remie b = length b == 2 && hasKing b && hasKing b'
     where (_:b') = b
 
+free :: Pos -> Board -> Bool 
+free p b =
+        case t of 
+        Nothing -> True 
+        otherwise -> False
+    where t = getFigOnPos b p  
+
 initialBoard :: Board 
 initialBoard = 
     [Chesspiece Pawn (x,7) W | x <- [1..8]] 

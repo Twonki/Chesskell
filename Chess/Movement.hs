@@ -51,17 +51,21 @@ validPawnMoves :: Board -> Chesspiece -> [Maybe Board]
 -- Step 3: Filter for hittibility
 -- 3.1 only move forward if nothing 
 -- 3.2 only move diagonal if hittable (check moves on x for diagonality)
-validPawnMoves b fig@(Chesspiece t p c) = undefined
+validPawnMoves b fig@(Chesspiece t p c)
+        | length finishers > 0 = undefined --Replace Logic
+        | otherwise = map (moveTo b fig) valids
     where 
         posMoves = pawnMoves p c
         attackMoves = [a |  a <- posMoves, fst a /= fst p]
         forwardMoves = [a |  a <- posMoves, fst a /= fst p]
-        validAttacks = undefined -- Filter only attackables
-        validForward = undefined -- Filter only free fields
+        attackFigs = demaybefy [getFigOnPos b a | a <- attackMoves, not (free a b)]
+        attackFigs' = filter (\y -> canAttack y fig) attackFigs
+        validAttacks = [pos c | c <-  attackFigs'] -- Filter only attackables
+        validForward = [c | c <- forwardMoves , free c b] -- Filter only free fields
         valids = validForward ++ validAttacks
         finishers 
-            | c == W = [a |  a <- valids, snd a = 8]
-            | c == B = [a |  a <- valids, snd a = 1]
+            | c == W = [a |  a <- valids, snd a == 1]
+            | c == B = [a |  a <- valids, snd a == 8]
 
 -- stopAtNearest takes positions -> stoppers -> positions
 -- For my use it needs to be flipped
@@ -79,10 +83,7 @@ allMoves b p =  clearMaybeBoard (concat $ map (moves b) fs)
     where fs = getFigsForPlayer b p 
 
 clearMaybeBoard :: [Maybe Board] -> [Board]
-clearMaybeBoard [] = [] 
-clearMaybeBoard (x:xs) = case x of 
-        Just x -> x : clearMaybeBoard xs
-        Nothing -> clearMaybeBoard xs
+clearMaybeBoard = demaybefy
 
 check :: Board -> Player -> Bool
 check b p = foldr (||) False $ map (not . hasKing) myFigures
@@ -92,3 +93,10 @@ check b p = foldr (||) False $ map (not . hasKing) myFigures
 
 checkmate :: Board -> Player -> Bool
 checkmate b p = [] == allMoves b p
+
+
+demaybefy :: [Maybe a] -> [a]
+demaybefy [] = []
+demaybefy (x:xs) = case x of 
+    Just x -> x : demaybefy xs
+    Nothing -> demaybefy xs
