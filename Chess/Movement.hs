@@ -51,7 +51,17 @@ validPawnMoves :: Board -> Chesspiece -> [Maybe Board]
 -- Step 3: Filter for hittibility
 -- 3.1 only move forward if nothing 
 -- 3.2 only move diagonal if hittable (check moves on x for diagonality)
-validPawnMoves = undefined
+validPawnMoves b fig@(Chesspiece t p c) = undefined
+    where 
+        posMoves = pawnMoves p c
+        attackMoves = [a |  a <- posMoves, fst a /= fst p]
+        forwardMoves = [a |  a <- posMoves, fst a /= fst p]
+        validAttacks = undefined -- Filter only attackables
+        validForward = undefined -- Filter only free fields
+        valids = validForward ++ validAttacks
+        finishers 
+            | c == W = [a |  a <- valids, snd a = 8]
+            | c == B = [a |  a <- valids, snd a = 1]
 
 -- stopAtNearest takes positions -> stoppers -> positions
 -- For my use it needs to be flipped
