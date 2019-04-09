@@ -65,12 +65,30 @@ free p b =
         otherwise -> False
     where t = getFigOnPos b p  
 
+-- This was faulty: If only one Tower was missing, tower was not said to be missing. It was ony missing if every instance was gone.
+--missingPieces :: Board -> Player -> [Figure]
+--missingPieces b p = nub $ filter missing pBoardRef
+--        where 
+--            pBoard = map typ $ getFigsForPlayer b p
+--            pBoardRef = map typ $ getFigsForPlayer initialBoard p
+--            missing = (\x-> not $ x `elem` pBoard)
+
+
 missingPieces :: Board -> Player -> [Figure]
-missingPieces b p = nub $ filter missing pBoardRef
-        where 
-            pBoard = map typ $ getFigsForPlayer b p
-            pBoardRef = map typ $ getFigsForPlayer initialBoard p
-            missing = (\x-> not $ x `elem` pBoard) 
+missingPieces b p = mask pieces difs
+    where
+        pieces = [Pawn,Bishop,Knight,Tower,Queen,King]
+        pBoard = map typ $ getFigsForPlayer b p
+        nums = map (\x-> length (filter (\a->a == x) pBoard)) pieces
+        expectedNums = map numberIfFull pieces
+        difs = zipWith (/=) nums expectedNums 
+
+
+numberIfFull:: Figure -> Int 
+numberIfFull Pawn = 8
+numberIfFull King = 1 
+numberIfFull Queen = 1
+numberIfFull _ = 2
 
 initialBoard :: Board 
 initialBoard = 
@@ -81,3 +99,9 @@ initialBoard =
     ++ [Chesspiece Bishop (3,1) B,Chesspiece Bishop (6,1) B,Chesspiece Bishop (3,8) W,Chesspiece Bishop (6,8) W]
     ++ [Chesspiece Queen (4,1) B , Chesspiece Queen (5,8) W]
     ++ [Chesspiece King (5,1) B , Chesspiece King (4,8) W]
+
+mask :: [a] -> [Bool] -> [a]
+mask [] [] = []
+mask a@(ah:as) b@(bh:bs)  
+    | length a /= length b = error "missmatch in masking"
+    | otherwise = if bh then ah:(mask as bs) else mask as bs  
