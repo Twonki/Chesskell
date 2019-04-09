@@ -3,17 +3,17 @@ module Tests.InitialBoardTests (allBoardTests) where
 import Tests.TestSuite
 
 allBoardTests = TestList [
- --   TestLabel "All Initial Moves Black" testIMB
- --   ,TestLabel "All Initial Moves White" testIMW
-    TestLabel "Figure Count White" testFCW
+    TestLabel "All Initial Moves Black" testIMB
+    ,TestLabel "All Initial Moves White" testIMW
+    ,TestLabel "Figure Count White" testFCW
     ,TestLabel "Figure Count Black" testFCB 
     ,TestLabel "No Check White" testNCW
     ,TestLabel "No Check Black" testNCB
      ]
--- 18 StartingMoves Black
-testIMB = 18 ~=? length (validMoves initialBoard B)
--- 18 StartingMoves White 
-testIMW = 18 ~=? length (validMoves initialBoard W)
+-- 20 StartingMoves Black
+testIMB = 20 ~=? length (validMoves initialBoard B)
+-- 20 StartingMoves White 
+testIMW = 20 ~=? length (validMoves initialBoard W)
 -- 16 Starting Figures for White
 testFCW = 16 ~=? length (getFigsForPlayer initialBoard W)
 -- 16 Starting Figures for Black

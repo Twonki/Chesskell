@@ -63,6 +63,13 @@ free p b =
         otherwise -> False
     where t = getFigOnPos b p  
 
+missingPieces :: Board -> Player -> [Figure]
+missingPieces b p = filter missing pBoardRef
+        where 
+            pBoard = map typ $ getFigsForPlayer b p
+            pBoardRef = map typ $ getFigsForPlayer initialBoard p
+            missing = (\x-> not $ x `elem` pBoard) 
+
 initialBoard :: Board 
 initialBoard = 
     [Chesspiece Pawn (x,7) W | x <- [1..8]] 
