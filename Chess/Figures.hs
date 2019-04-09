@@ -1,14 +1,9 @@
 module Chess.Figures where 
 
-import Data.List (nub)
+import Data.Maybe(isNothing)
 
-data Figure = Pawn
-                | Knight
-                | Bishop
-                | Tower 
-                | Queen
-                | King
-                deriving (Eq,Show,Read)
+data Figure = Pawn | Knight | Bishop | Tower | Queen | King
+    deriving (Eq,Show,Read)
                             
 type Pos = (Int,Int)
 data Player = W | B deriving (Eq,Show,Read)
@@ -26,10 +21,10 @@ getFigOnPos b t =
         if candidate == []
         then Nothing 
         else Just $ head candidate
-    where candidate = filter (\(Chesspiece a b c) -> b == t) b
+    where candidate = filter (\cp -> pos cp == t) b
 
 getFigsForPlayer :: Board -> Player -> [Chesspiece]
-getFigsForPlayer b d = filter (\(Chesspiece a b c) -> d == c) b
+getFigsForPlayer b d = filter (\cp -> player cp == d) b
 
 instance Show Chesspiece where 
     show c = "("++show (typ c) ++ "," ++ show (pos c) ++ "," ++ show (player c) ++")"
@@ -38,7 +33,7 @@ changePlayer :: Player -> Player
 changePlayer W = B 
 changePlayer B = W
 
---Sets a Chesspiece to a new pos 
+-- Sets a Chesspiece to a new pos 
 -- Regardless whether it's allowed to perform this move or if there is anything
 draw :: Chesspiece -> Pos -> Chesspiece
 draw f t = Chesspiece {typ = (typ f),pos=t,player=(player f)}
@@ -46,7 +41,7 @@ draw f t = Chesspiece {typ = (typ f),pos=t,player=(player f)}
 takenPositions :: Board -> [Pos]
 takenPositions b = map (\t->pos t) b
 
-hasKing :: [Chesspiece] -> Bool 
+hasKing :: [Chesspiece] -> Bool
 hasKing = foldr (||) False . map (\(Chesspiece f _ _) -> f == King)
 
 -- A Chesspiece can move "onto" another Chesspiece if it has a different colour
@@ -59,36 +54,21 @@ remie b = length b == 2 && hasKing b && hasKing b'
     where (_:b') = b
 
 free :: Pos -> Board -> Bool 
-free p b =
-        case t of 
-        Nothing -> True 
-        otherwise -> False
-    where t = getFigOnPos b p  
-
--- This was faulty: If only one Tower was missing, tower was not said to be missing. It was ony missing if every instance was gone.
---missingPieces :: Board -> Player -> [Figure]
---missingPieces b p = nub $ filter missing pBoardRef
---        where 
---            pBoard = map typ $ getFigsForPlayer b p
---            pBoardRef = map typ $ getFigsForPlayer initialBoard p
---            missing = (\x-> not $ x `elem` pBoard)
-
+free p b = isNothing $ getFigOnPos b p 
 
 missingPieces :: Board -> Player -> [Figure]
-missingPieces b p = mask pieces difs
+missingPieces b p = mask pieces difs -- i select all figures where i don't have as many as i should have
     where
-        pieces = [Pawn,Bishop,Knight,Tower,Queen,King]
-        pBoard = map typ $ getFigsForPlayer b p
-        nums = map (\x-> length (filter (\a->a == x) pBoard)) pieces
-        expectedNums = map numberIfFull pieces
-        difs = zipWith (/=) nums expectedNums 
-
-
-numberIfFull:: Figure -> Int 
-numberIfFull Pawn = 8
-numberIfFull King = 1 
-numberIfFull Queen = 1
-numberIfFull _ = 2
+        numberIfFull:: Figure -> Int 
+        numberIfFull Pawn = 8
+        numberIfFull King = 1 
+        numberIfFull Queen = 1
+        numberIfFull _ = 2
+        pieces = [Pawn,Bishop,Knight,Tower,Queen,King] --a full set of figures
+        pBoard = map typ $ getFigsForPlayer b p 
+        nums = map (\x-> length (filter (\a->a == x) pBoard)) pieces -- the amount of figures i have for each type
+        expectedNums = map numberIfFull pieces -- the normal amount of figures a full set would have
+        difs = zipWith (/=) nums expectedNums  -- Bool-List if i have as many figures as i could max have
 
 initialBoard :: Board 
 initialBoard = 
