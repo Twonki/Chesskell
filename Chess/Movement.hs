@@ -52,7 +52,9 @@ validPawnMoves :: Board -> Chesspiece -> [Maybe Board]
 -- 3.1 only move forward if nothing 
 -- 3.2 only move diagonal if hittable (check moves on x for diagonality)
 validPawnMoves b fig@(Chesspiece t p c)
-        | length finishers > 0 = undefined --Replace Logic
+        | length finishers > 0 = --Replace Logic
+            let replacingPawns = map (\t -> draw fig t) finishers
+            in  concat $ map (replacePawn' b) replacingPawns
         | otherwise = map (moveTo b fig) valids
     where 
         posMoves = pawnMoves p c
@@ -94,9 +96,19 @@ check b p = foldr (||) False $ map (not . hasKing) myFigures
 checkmate :: Board -> Player -> Bool
 checkmate b p = [] == allMoves b p
 
-
 demaybefy :: [Maybe a] -> [a]
 demaybefy [] = []
 demaybefy (x:xs) = case x of 
     Just x -> x : demaybefy xs
     Nothing -> demaybefy xs
+
+replacePawn :: Board -> Chesspiece -> [Board]
+replacePawn b piece@(Chesspiece Pawn p c) = 
+    let missing = missingPieces b c
+        missing' = filter (\x-> x /= Pawn) missing --Pawns cannot be replaced by pawns
+        b' = filter (\n-> n /= piece) b
+        replacers = map (\mf -> Chesspiece{typ=mf,pos=p,player=c}) missing'
+    in  map (:b') replacers
+
+replacePawn' :: Board -> Chesspiece -> [Maybe Board]
+replacePawn' b p= map (Just) $ replacePawn b p

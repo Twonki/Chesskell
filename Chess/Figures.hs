@@ -1,5 +1,7 @@
 module Chess.Figures where 
 
+import Data.List (nub)
+
 data Figure = Pawn
                 | Knight
                 | Bishop
@@ -64,7 +66,7 @@ free p b =
     where t = getFigOnPos b p  
 
 missingPieces :: Board -> Player -> [Figure]
-missingPieces b p = filter missing pBoardRef
+missingPieces b p = nub $ filter missing pBoardRef
         where 
             pBoard = map typ $ getFigsForPlayer b p
             pBoardRef = map typ $ getFigsForPlayer initialBoard p
