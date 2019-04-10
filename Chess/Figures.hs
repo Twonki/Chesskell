@@ -42,7 +42,7 @@ takenPositions :: Board -> [Pos]
 takenPositions b = map (\t->pos t) b
 
 hasKing :: [Chesspiece] -> Bool
-hasKing = foldr (||) False . map (\(Chesspiece f _ _) -> f == King)
+hasKing = or . map (\(Chesspiece f _ _) -> f == King)
 
 -- A Chesspiece can move "onto" another Chesspiece if it has a different colour
 canAttack :: Chesspiece -> Chesspiece -> Bool

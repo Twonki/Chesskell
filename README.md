@@ -23,6 +23,13 @@ The folder *src*:
 * *AI*(ToBeDone): Contains the alpha-beta pruning
 * *Game*(ToBeDone): Contains the game logic, putting all the pieces together and IO with the player.
 
+** Where to start reading?**
+
+I think the best way to start reading is
+
+Figures.hs -> CoreMovement.hs -> Movement.hs -> Game.hs 
+
+This way it gets more complex and the required things in movement are known. 
 ## Contribution
 You're contribution is welcome! There are several topics you can help with:
 
