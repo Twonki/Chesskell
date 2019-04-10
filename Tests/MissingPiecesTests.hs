@@ -19,15 +19,12 @@ testEBB = 6 ~=? length ( missingPieces [] B)
 testFBW = 0 ~=? length ( missingPieces initialBoard W )
 testFBB = 0 ~=? length ( missingPieces initialBoard B )
 
-oneMissingTower = filter (\x-> pos x /= (1,8)) initialBoard
-twoMissingTowers = filter (\x-> pos x /= (8,8)) oneMissingTower 
+oneMissingTower = removeFigure initialBoard (1,8)
+twoMissingTowers = removeFigure oneMissingTower (8,8)
 
 -- There should be no difference if there is one or two towers missing
 testOMT =  1 ~=? length ( missingPieces oneMissingTower  W )
 testTMT =  1 ~=? length ( missingPieces twoMissingTowers W )
 
-addQueen :: Board -> Player -> Board
-addQueen b c =(Chesspiece Queen (5,5) c):b
-
-testOQKW = 4 ~=? length ( missingPieces (addQueen safeKings W) W )
-testOQKB = 4 ~=? length ( missingPieces (addQueen safeKings B) B )
+testOQKW = 4 ~=? length ( missingPieces (addQueen safeKings (5,5) W) W )
+testOQKB = 4 ~=? length ( missingPieces (addQueen safeKings (5,5) B) B )
