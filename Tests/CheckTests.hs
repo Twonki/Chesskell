@@ -1,4 +1,4 @@
-module Tests.CheckTests (checkTests,checkMateTests) where
+module Tests.CheckTests (checkTests,checkMateTests,checkLimitedMoveTests) where
 
 import Tests.TestSuite
 
@@ -52,3 +52,18 @@ testKA = False ~=? checkmate ka B
 -- A tower can move in to safe the king 
 sgp = addTower cmb (2,7) B
 testSGP = False ~=? checkmate sgp B
+
+checkLimitedMoveTests = TestList[
+    TestLabel "Not into Check Horizontal" testNICH
+    ,TestLabel "Not into Check Vertical" testNICV
+    ,TestLabel "Strike Aggressor" testSA
+    ]
+
+nich = addTower safeKings (8,5) W
+testNICH = 2 ~=? length (validMoves nich B) 
+nicv = addTower safeKings (6,8) W
+testNICV = 2 ~=? length (validMoves nicv B) 
+
+sa = (addTower safeKings (8,7) W)
+-- The King can either move away or strike the tower, however i cannot move diagonally as it would mean another check
+testSA = 2 ~=? length (validMoves sa B) 

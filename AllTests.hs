@@ -17,4 +17,5 @@ allTests = TestList [
    ,TestLabel "MissingPiecesTests" allMissingPiecesTests
    ,TestLabel "CheckTests" checkTests
    ,TestLabel "CheckmateTests" checkMateTests
+   ,TestLabel "CheckLimitedMovesTests" checkLimitedMoveTests
    ]
