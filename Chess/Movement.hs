@@ -77,7 +77,7 @@ moveFilter b = (flip stopAtNearest) (takenPositions b) . filter onBoard
 -- Filter every possible moves and only allowes the one where i´m not in check
 -- Required to kill a deadlock i produced with allmoves and check
 validMoves :: Board -> Player -> [Board]
-validMoves b p = filter (flip check p) $ (allMoves b p)
+validMoves b p = filter (\l -> not (check l p)) $ (allMoves b p)
 
 -- Every reachable position, without check
 allMoves :: Board -> Player -> [Board]
@@ -94,7 +94,7 @@ check b p = foldr (||) False $ map (not . hasKing) myFigures
         myFigures = map (flip getFigsForPlayer p) enemyMoves
 
 checkmate :: Board -> Player -> Bool
-checkmate b p = [] == allMoves b p
+checkmate b p = [] == validMoves b p
 
 demaybefy :: [Maybe a] -> [a]
 demaybefy [] = []

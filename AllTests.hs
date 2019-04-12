@@ -8,6 +8,8 @@ import Tests.FairMetricTests
 import Tests.MissingPiecesTests
 import Tests.CheckTests
 
+import Tests.TestSuite
+
 allTests = TestList [
    TestLabel "PawnTests" allPawnTests
    ,TestLabel "BoardTests" allBoardTests
