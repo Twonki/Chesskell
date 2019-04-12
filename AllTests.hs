@@ -6,10 +6,13 @@ import Tests.PawnTests
 import Tests.InitialBoardTests
 import Tests.FairMetricTests
 import Tests.MissingPiecesTests
+import Tests.CheckTests
 
 allTests = TestList [
    TestLabel "PawnTests" allPawnTests
    ,TestLabel "BoardTests" allBoardTests
    ,TestLabel "FairMetricTests" allFairMetricTests
    ,TestLabel "MissingPiecesTests" allMissingPiecesTests
+   ,TestLabel "CheckTests" checkTests
+   ,TestLabel "CheckmateTests" checkMateTests
    ]
