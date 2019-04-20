@@ -20,7 +20,7 @@ moveTo b f p =
         then Just $ (draw f p) : b''
         else Nothing --Invalid Move - cannot hit there!
     where   b' = filter (\n-> n /= f) b 
-            other  = getFigOnPos b' p
+            other  = pieceOnPos b' p
             attackable = case other of 
                 Nothing -> True --There is nothing, so i can move her
                 Just m -> canAttack f m -- there is something, i have to check if i can attack
@@ -60,7 +60,7 @@ validPawnMoves b fig@(Chesspiece t p c)
         posMoves = pawnMoves p c
         attackMoves = [a |  a <- posMoves, fst a /= fst p]
         forwardMoves = [a |  a <- posMoves, fst a /= fst p]
-        attackFigs = demaybefy [getFigOnPos b a | a <- attackMoves, not (free a b)]
+        attackFigs = demaybefy [pieceOnPos b a | a <- attackMoves, not (free a b)]
         attackFigs' = filter (\y -> canAttack y fig) attackFigs
         validAttacks = [pos c | c <-  attackFigs'] -- Filter only attackables
         validForward = [c | c <- forwardMoves , free c b] -- Filter only free fields
@@ -82,7 +82,7 @@ validMoves b p = filter (\l -> not (check l p)) $ (allMoves b p)
 -- Every reachable position, without check
 allMoves :: Board -> Player -> [Board]
 allMoves b p =  clearMaybeBoard (concat $ map (moves b) fs)
-    where fs = getFigsForPlayer b p 
+    where fs = piecesForPlayer b p 
 
 clearMaybeBoard :: [Maybe Board] -> [Board]
 clearMaybeBoard = demaybefy
@@ -91,7 +91,7 @@ check :: Board -> Player -> Bool
 check b p = foldr (||) False $ map (not . hasKing) myFigures
     where   
         enemyMoves = allMoves b $ changePlayer p 
-        myFigures = map (flip getFigsForPlayer p) enemyMoves
+        myFigures = map (flip piecesForPlayer p) enemyMoves
 
 checkmate :: Board -> Player -> Bool
 checkmate b p = [] == validMoves b p

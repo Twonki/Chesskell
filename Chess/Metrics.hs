@@ -17,8 +17,8 @@ simple b p
     | p == W  = whites / blacks
     | p == B  = blacks / whites
     where 
-        whites = fromIntegral $ length $ getFigsForPlayer b W
-        blacks = fromIntegral $ length $ getFigsForPlayer b B
+        whites = fromIntegral $ length $ piecesForPlayer b W
+        blacks = fromIntegral $ length $ piecesForPlayer b B
 
 -- Each Figure has a certain value (see beyond) and the values are summed
 ratedSimple :: Board -> Player -> Value
@@ -26,8 +26,8 @@ ratedSimple b p
     | p == W = whiteValue / blackValue
     | p == B = blackValue / whiteValue
     where
-        whiteValue = boardValue $ getFigsForPlayer b W 
-        blackValue = boardValue $ getFigsForPlayer b B 
+        whiteValue = boardValue $ piecesForPlayer b W 
+        blackValue = boardValue $ piecesForPlayer b B 
 
 boardValue :: Board -> Value 
 boardValue b = sum $ map value' $ map (\x -> typ x) b 

@@ -15,9 +15,9 @@ testIMB = 20 ~=? length (validMoves initialBoard B)
 -- 20 StartingMoves White 
 testIMW = 20 ~=? length (validMoves initialBoard W)
 -- 16 Starting Figures for White
-testFCW = 16 ~=? length (getFigsForPlayer initialBoard W)
+testFCW = 16 ~=? length (piecesForPlayer initialBoard W)
 -- 16 Starting Figures for Black
-testFCB = 16 ~=? length (getFigsForPlayer initialBoard B)
+testFCB = 16 ~=? length (piecesForPlayer initialBoard B)
 -- White doesn't start in Check 
 testNCW = False ~=? check initialBoard W
 -- Black doesn't start in Check 

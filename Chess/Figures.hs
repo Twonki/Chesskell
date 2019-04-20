@@ -16,15 +16,15 @@ data Chesspiece = Chesspiece {
 
 type Board = [Chesspiece]
 
-getFigOnPos :: Board -> Pos -> Maybe Chesspiece
-getFigOnPos b t = 
+pieceOnPos :: Board -> Pos -> Maybe Chesspiece
+pieceOnPos b t = 
         if candidate == []
         then Nothing 
         else Just $ head candidate
     where candidate = filter (\cp -> pos cp == t) b
 
-getFigsForPlayer :: Board -> Player -> [Chesspiece]
-getFigsForPlayer b d = filter (\cp -> player cp == d) b
+piecesForPlayer :: Board -> Player -> [Chesspiece]
+piecesForPlayer b d = filter (\cp -> player cp == d) b
 
 instance Show Chesspiece where 
     show c = "("++show (typ c) ++ "," ++ show (pos c) ++ "," ++ show (player c) ++")"
@@ -54,7 +54,7 @@ remie b = length b == 2 && hasKing b && hasKing b'
     where (_:b') = b
 
 free :: Pos -> Board -> Bool 
-free p b = isNothing $ getFigOnPos b p 
+free p b = isNothing $ pieceOnPos b p 
 
 missingPieces :: Board -> Player -> [Figure]
 missingPieces b p = mask pieces difs -- i select all figures where i don't have as many as i should have
@@ -65,7 +65,7 @@ missingPieces b p = mask pieces difs -- i select all figures where i don't have 
         numberIfFull Queen = 1
         numberIfFull _ = 2
         pieces = [Pawn,Bishop,Knight,Tower,Queen,King] --a full set of figures
-        pBoard = map typ $ getFigsForPlayer b p 
+        pBoard = map typ $ piecesForPlayer b p 
         nums = map (\x-> length (filter (\a->a == x) pBoard)) pieces -- the amount of figures i have for each type
         expectedNums = map numberIfFull pieces -- the normal amount of figures a full set would have
         difs = zipWith (/=) nums expectedNums  -- Bool-List if i have as many figures as i could max have
