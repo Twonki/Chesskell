@@ -3,6 +3,7 @@ module Chess.Movement (
     validMoves,
     allMoves,
     moves,
+    moveTo,
     clearMaybeBoard,
     check,
     checkmate
