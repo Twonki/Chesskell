@@ -3,12 +3,14 @@ module Game where
 import Chess.Movement
 import Chess.Metrics
 
-import Control.Monad.State.Lazy
-
 type GameState = (Board, Player)
-type Game = StateT GameState IO
-
 type Move = (Pos,Pos)
+
+main :: IO () 
+main = do
+    let g@(b,c) = initialGameState
+    putStrLn "Hello, lets start Chess!"
+    
 
 changePlayer' :: GameState -> GameState
 changePlayer' = (\(b,p)->(b, changePlayer p))
@@ -30,6 +32,13 @@ canPickUp:: Pos -> GameState -> Bool
 canPickUp p (b,c) = demaybiebool $ fmap (((==) c) . player) f
     where f = pieceOnPos b p
 
+-- Helpers 
+lost :: GameState -> Player -> Bool 
+lost g@(b,c) c' = checkmate b c'
+won g c = lost g (changePlayer c)
+
+initialGameState = (initialBoard,W)
+
 demaybiebool :: Maybe Bool -> Bool 
 demaybiebool Nothing = False 
-demaybiebool (Just x) = x 
+demaybiebool (Just x) = x
