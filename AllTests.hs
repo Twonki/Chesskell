@@ -7,6 +7,7 @@ import Tests.InitialBoardTests
 import Tests.FairMetricTests
 import Tests.MissingPiecesTests
 import Tests.CheckTests
+import Tests.PawnReplacementTests
 
 import Tests.TestSuite
 
@@ -18,4 +19,5 @@ allTests = TestList [
    ,TestLabel "CheckTests" checkTests
    ,TestLabel "CheckmateTests" checkMateTests
    ,TestLabel "CheckLimitedMovesTests" checkLimitedMoveTests
+   ,TestLabel "Pawn Replacement" allPawnReplacementTests
    ]
