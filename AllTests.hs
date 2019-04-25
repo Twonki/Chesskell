@@ -20,4 +20,5 @@ allTests = TestList [
    ,TestLabel "CheckmateTests" checkMateTests
    ,TestLabel "CheckLimitedMovesTests" checkLimitedMoveTests
    ,TestLabel "Pawn Replacement" allPawnReplacementTests
+   ,TestLabel "KingMoves " kingMoveTests
    ]
