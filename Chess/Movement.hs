@@ -60,7 +60,7 @@ validPawnMoves b fig@(Chesspiece t p c)
     where 
         posMoves = pawnMoves p c
         attackMoves = [a |  a <- posMoves, fst a /= fst p]
-        forwardMoves = [a |  a <- posMoves, fst a /= fst p]
+        forwardMoves = [a |  a <- posMoves, fst a == fst p]
         attackFigs = demaybefy [pieceOnPos b a | a <- attackMoves, not (free a b)]
         attackFigs' = filter (\y -> canAttack y fig) attackFigs
         validAttacks = [pos c | c <-  attackFigs'] -- Filter only attackables
