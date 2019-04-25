@@ -106,10 +106,9 @@ demaybefy (x:xs) = case x of
 replacePawn :: Board -> Chesspiece -> [Board]
 replacePawn b piece@(Chesspiece Pawn p c) = 
     let missing = missingPieces b c
-        missing' = filter (\x-> x /= Pawn) missing --Pawns cannot be replaced by pawns
-        b' = filter (\n-> n /= piece) b
-        replacers = map (\mf -> Chesspiece{typ=mf,pos=p,player=c}) missing'
-    in  map (:b') replacers
+        b' = [t | t<- b , t/= piece]
+        replacers = map (\mf -> Chesspiece{typ=mf,pos=p,player=c}) missing
+    in  [r:b' | r <- replacers]
 
 replacePawn' :: Board -> Chesspiece -> [Maybe Board]
 replacePawn' b p= map (Just) $ replacePawn b p
