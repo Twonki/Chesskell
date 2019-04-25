@@ -27,7 +27,20 @@ piecesForPlayer :: Board -> Player -> [Chesspiece]
 piecesForPlayer b d = filter (\cp -> player cp == d) b
 
 instance Show Chesspiece where 
-    show c = "("++show (typ c) ++ "," ++ show (pos c) ++ "," ++ show (player c) ++")"
+    show c = "("++ smallColor (player c) ++shortName (typ c) ++ ")"
+
+printBoard :: Board -> String 
+printBoard b = foldl (++) "" [printLine b l | l<-[1..8]]
+
+printLine :: Board -> Int -> String 
+printLine b l = foldr  (++) "|\n" [printCell b (x,l)| x<-[1..8]] 
+
+printCell :: Board -> Pos -> String
+printCell b p = 
+    case mpiece of 
+        Nothing -> "|____"
+        Just n  -> "|"++(show n)
+    where mpiece = pieceOnPos b p 
 
 changePlayer :: Player -> Player 
 changePlayer W = B 
@@ -85,3 +98,15 @@ mask [] [] = []
 mask a@(ah:as) b@(bh:bs)  
     | length a /= length b = error "missmatch in masking"
     | otherwise = if bh then ah:(mask as bs) else mask as bs  
+
+shortName :: Figure -> String 
+shortName Pawn = "P"
+shortName Bishop = "B"
+shortName Queen = "Q"
+shortName King = "K"
+shortName Knight = "H"
+shortName Tower = "T"
+
+smallColor :: Player -> String 
+smallColor W = "w"
+smallColor B = "b"
