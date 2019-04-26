@@ -7,7 +7,6 @@ module Chess.Movement (
     clearMaybeBoard,
     check,
     checkmate,
-    moveFilter
 )where
 
 import  Data.List.Split (splitOn)
@@ -70,11 +69,6 @@ validPawnMoves b fig@(Chesspiece t p c)
         finishers 
             | c == W = [a |  a <- valids, snd a == 1]
             | c == B = [a |  a <- valids, snd a == 8]
-
--- stopAtNearest takes positions -> stoppers -> positions
--- For my use it needs to be flipped
-moveFilter :: Board -> [Pos] -> [Pos]            
-moveFilter b = (flip stopAtNearest) (takenPositions b) . filter onBoard
 
 -- Filter every possible moves and only allowes the one where i´m not in check
 -- Required to kill a deadlock i produced with allmoves and check

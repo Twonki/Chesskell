@@ -68,6 +68,11 @@ pawnMoves (x,y) t = map (add (x,y)) $ filter (\x->jumpWidth x <= 2) $ (,) <$> [-
             | t == B && y == 2   = [1,2]
             | otherwise          = [1]
 
+-- stopAtNearest takes positions -> stoppers -> positions
+-- For my use it needs to be flipped
+moveFilter :: Board -> [Pos] -> [Pos]            
+moveFilter b = (flip stopAtNearest) (takenPositions b) . filter onBoard
+
 add (x,y) (a,b) = (x+a,y+b)
 jumpWidth (a,b) = distance' a b
 distance' a b = abs(a)+abs(b)
