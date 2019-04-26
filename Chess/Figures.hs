@@ -55,6 +55,9 @@ draw f t = Chesspiece {typ = (typ f),pos=t,player=(player f)}
 takenPositions :: Board -> [Pos]
 takenPositions b = map (\t->pos t) b
 
+removePiece :: Board -> Chesspiece -> Board
+removePiece b p = filter (\c->c/=p) b  
+
 hasKing :: [Chesspiece] -> Bool
 hasKing = or . map (\(Chesspiece f _ _) -> f == King)
 

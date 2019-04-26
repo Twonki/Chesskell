@@ -21,20 +21,20 @@ moveTo b f p =
         if attackable
         then Just $ (draw f p) : b''
         else Nothing --Invalid Move - cannot hit there!
-    where   b' = filter (\n-> n /= f) b 
+    where   b' = removePiece b f
             other  = pieceOnPos b' p
             attackable = case other of 
                 Nothing -> True --There is nothing, so i can move her
                 Just m -> canAttack f m -- there is something, i have to check if i can attack
             b'' = case other of 
                 Nothing -> b' -- Nothing killed
-                Just other -> filter (\n-> n /= other) b' --I killed e
+                Just other -> removePiece b' other --I killed e
             
 moves :: Board -> Chesspiece -> [Maybe Board]
 moves b fig@(Chesspiece t p c) 
     | t == Pawn = validPawnMoves b fig 
-    | otherwise = map (moveTo b fig) possibleMoves
-    where b' = filter (\n-> n /= fig) b   
+    | otherwise = moveTo b fig <$> possibleMoves
+    where b' = removePiece b fig   
           routine = concat . map (moveFilter b') .  map ($p) 
           possibleMoves = 
             case t  of  
@@ -55,9 +55,9 @@ validPawnMoves :: Board -> Chesspiece -> [Maybe Board]
 -- 3.2 only move diagonal if hittable (check moves on x for diagonality)
 validPawnMoves b fig@(Chesspiece t p c)
         | length finishers > 0 = --Replace Logic
-            let replacingPawns = map (\t -> draw fig t) finishers
-            in  concat $ map (replacePawn' b) replacingPawns
-        | otherwise = map (moveTo b fig) valids
+            let replacingPawns = (\t -> draw fig t) <$> finishers
+            in  concat $ replacePawn' b <$> replacingPawns
+        | otherwise =  moveTo b fig <$> valids
     where 
         posMoves = pawnMoves p c
         attackMoves = [a |  a <- posMoves, fst a /= fst p]
@@ -83,17 +83,17 @@ validMoves b p = filter (\l -> not (check l p)) $ (allMoves b p)
 
 -- Every reachable position, without check
 allMoves :: Board -> Player -> [Board]
-allMoves b p =  clearMaybeBoard (concat $ map (moves b) fs)
+allMoves b p =  clearMaybeBoard (concat $ moves b <$> fs)
     where fs = piecesForPlayer b p 
 
 clearMaybeBoard :: [Maybe Board] -> [Board]
 clearMaybeBoard = demaybefy
 
 check :: Board -> Player -> Bool
-check b p = foldr (||) False $ map (not . hasKing) myFigures
+check b p = foldr (||) False $ not . hasKing <$> myFigures
     where   
         enemyMoves = allMoves b $ changePlayer p 
-        myFigures = map (flip piecesForPlayer p) enemyMoves
+        myFigures = flip piecesForPlayer p <$> enemyMoves
 
 checkmate :: Board -> Player -> Bool
 checkmate b p = [] == validMoves b p
@@ -106,10 +106,10 @@ demaybefy (x:xs) = case x of
 
 replacePawn :: Board -> Chesspiece -> [Board]
 replacePawn b piece@(Chesspiece Pawn p c) = 
-    let missing = missingPieces b c
-        b' = [t | t<- b , t/= piece]
-        replacers = map (\mf -> Chesspiece{typ=mf,pos=p,player=c}) missing
-    in  [r:b' | r <- replacers]
+    let b' = removePiece b piece
+        missing = missingPieces b' c
+        replacers = (\mf -> Chesspiece{typ=mf,pos=p,player=c}) <$> missing
+    in  [r:b' | r <- replacers] 
 
 replacePawn' :: Board -> Chesspiece -> [Maybe Board]
-replacePawn' b p= map (Just) $ replacePawn b p
+replacePawn' b p= Just <$> (flip removePiece) p <$> replacePawn b p

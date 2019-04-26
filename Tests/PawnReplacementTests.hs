@@ -25,5 +25,5 @@ amDF = addPawn am (5,2) W
 -- 4 Addition Replacements
 -- 2 Staying as Pawns
 testAMDF = 13 ~=? length ( validMoves amDF  W )
--- There will never be more than 3 Figures if i replace one
+-- There will never be more than 4 Figures if i replace one
 testPCRDF = True ~=? (all ((==) 4) $ map (length) ( validMoves amDF  W ))
