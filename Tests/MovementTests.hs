@@ -15,7 +15,6 @@ allMovementTests = TestList [
 -- =======================================
 -- ========== King =======================
 -- =======================================
-
 allKingMoves = TestList [
     TestLabel "SafeWhite" testSW,
     TestLabel "SafeBlack" testSB,
@@ -37,7 +36,6 @@ mb' = addKing mb (1,1) W
 
 testMB = 8 ~=? length ( validMoves mb' B)
 
-
 -- =======================================
 -- ========== Queen ======================
 -- =======================================
@@ -50,25 +48,25 @@ allQueenMoves = TestList [
 
 qaf = addQueen safeKings (5,5) W 
 -- 3 Moves for King 
--- X Moves for Queen 
-testQAF = 20 ~=? length (validMoves qaf W)
+-- 26 Moves for Queen 
+testQAF = 29 ~=? length (validMoves qaf W)
 
 qbbf = addPawn qaf (5,6) W 
 -- 3 Moves for King 
 -- 1 Move for Pawn 
--- Y Moves for Queen
-testQBBF = 20 ~=? length (validMoves qbbf W)
+-- 22 Moves for Queen
+testQBBF = 26 ~=? length (validMoves qbbf W)
 
 qbbe = addPawn qaf (5,6) B 
 -- 3 Moves for King 
 -- 1 Move onto Pawn 
--- Y Moves for Queen
-testQBBE = 20 ~=? length (validMoves qbbe W)
+-- 22 Moves for Queen
+testQBBE = 26 ~=? length (validMoves qbbe W)
 
 qaeob = addQueen safeKings (5,8) W 
 -- 3 Moves for King 
--- Z Moves for Queen 
-testQAEOB = 15 ~=? length (validMoves qaeob W)
+-- 21 Moves for Queen 
+testQAEOB = 24 ~=? length (validMoves qaeob W)
 
 -- =======================================
 -- ========== Knight =====================
@@ -82,25 +80,25 @@ allKnightMoves = TestList [
 
 kaf = addKnight safeKings (5,5) W 
 -- 3 Moves for King 
--- X Moves for Knight 
-testKAF = 20 ~=? length (validMoves kaf W)
+-- 8 Moves for Knight 
+testKAF = (3+8) ~=? length (validMoves kaf W)
 
-kbbf = addPawn kaf (5,6) W 
+kbbf = addPawn kaf (6,7) W 
 -- 3 Moves for King 
 -- 1 Move for Pawn 
--- Y Moves for Knight
-testKBBF = 20 ~=? length (validMoves kbbf W)
+-- 7 Moves for Knight
+testKBBF = (3+1+7) ~=? length (validMoves kbbf W)
 
-kbbe = addPawn kaf (5,6) B 
+kbbe = addPawn kaf (6,7) B 
 -- 3 Moves for King 
 -- 1 Move onto Pawn 
--- Y Moves for Knight
-testKBBE = 20 ~=? length (validMoves kbbe W)
+-- 7 Moves for Knight
+testKBBE = (3+1+7) ~=? length (validMoves kbbe W)
 
 kaeob = addKnight safeKings (5,8) W 
 -- 3 Moves for King 
--- Z Moves for Knight 
-testKAEOB = 15 ~=? length (validMoves kaeob W)
+-- 4 Moves for Knight 
+testKAEOB = (3+4) ~=? length (validMoves kaeob W)
     
 -- =======================================
 -- ========== Bishop =====================
@@ -114,25 +112,25 @@ allBishopMoves = TestList [
 
 baf = addBishop safeKings (5,5) W 
 -- 3 Moves for King 
--- X Moves for Bishop 
-testBAF = 20 ~=? length (validMoves baf W)
+-- 12 Moves for Bishop 
+testBAF = 15 ~=? length (validMoves baf W)
 
 bbbf = addPawn baf (5,6) W 
 -- 3 Moves for King 
 -- 1 Move for Pawn 
--- Y Moves for Bishop
-testBBBF = 20 ~=? length (validMoves bbbf W)
+-- 11 Moves for Bishop
+testBBBF = 15 ~=? length (validMoves bbbf W)
 
 bbbe = addPawn baf (5,6) B 
 -- 3 Moves for King 
 -- 1 Move onto Pawn 
--- Y Moves for Bishop
-testBBBE = 20 ~=? length (validMoves bbbe W)
+-- 11 Moves for Bishop
+testBBBE = 15 ~=? length (validMoves bbbe W)
 
 baeob = addBishop safeKings (5,8) W 
 -- 3 Moves for King 
--- Z Moves for Bishop 
-testBAEOB = 15 ~=? length (validMoves baeob W)
+-- 7 Moves for Bishop 
+testBAEOB = 10 ~=? length (validMoves baeob W)
         
 -- =======================================
 -- ========== Tower ======================
@@ -145,23 +143,27 @@ allTowerMoves = TestList [
  ]
 
 taf = addTower safeKings (5,5) W 
--- 3 Moves for King 
+-- 3 Moves for King
+-- A tower can move the whole board of 8 pieces with nothing in the way, but not his own field
+-- Same for Y 
+-- Resulting in (2x7) Moves
 -- X Moves for Tower 
-testTAF = 20 ~=? length (validMoves taf W)
+testTAF = (3+7+7) ~=? length (validMoves taf W)
 
 tbbf = addPawn taf (5,6) W 
 -- 3 Moves for King 
 -- 1 Move for Pawn 
--- Y Moves for Tower
-testTBBF = 20 ~=? length (validMoves tbbf W)
+-- All Tower Moves minus the 3 fields blocked by pawn 
+testTBBF = (3+1+14-3) ~=? length (validMoves tbbf W)
 
 tbbe = addPawn taf (5,6) B 
 -- 3 Moves for King 
 -- 1 Move onto Pawn 
--- Y Moves for Tower
-testTBBE = 20 ~=? length (validMoves tbbe W)
+-- All Tower Moves minus the 3 fields blocked by pawn 
+testTBBE = (3+1+14-3) ~=? length (validMoves tbbe W)
 
 taeob = addTower safeKings (5,8) W 
 -- 3 Moves for King 
--- Z Moves for Tower 
-testTAEOB = 15 ~=? length (validMoves taeob W)
+-- 14 Moves for Tower
+-- minus one for my king  
+testTAEOB = (3+7+7-1) ~=? length (validMoves taeob W)
