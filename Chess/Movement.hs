@@ -6,7 +6,8 @@ module Chess.Movement (
     moveTo,
     clearMaybeBoard,
     check,
-    checkmate
+    checkmate,
+    moveFilter
 )where
 
 import  Data.List.Split (splitOn)

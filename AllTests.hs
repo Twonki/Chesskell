@@ -9,8 +9,9 @@ import Tests.MissingPiecesTests
 import Tests.CheckTests
 import Tests.PawnReplacementTests
 import Tests.MovementTests
+import Tests.CoreMovementTests
 
-import Tests.TestSuite
+import Tests.TestSuite -- DEBUG ONLY 
 
 allTests = TestList [
    TestLabel "PawnTests" allPawnTests
@@ -21,5 +22,6 @@ allTests = TestList [
    ,TestLabel "CheckmateTests" checkMateTests
    ,TestLabel "CheckLimitedMovesTests" checkLimitedMoveTests
    ,TestLabel "Pawn Replacement" allPawnReplacementTests
+   ,TestLabel "Core Movement Tests" allCoreMovementTests
    ,TestLabel "Movement Tests" allMovementTests
    ]
