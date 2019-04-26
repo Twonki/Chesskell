@@ -57,7 +57,7 @@ knightMoves :: Pos -> [Pos]
 knightMoves (x,y) = [(x+dx,y+dy) | dx <-[1,(-1),2,(-2)] , dy <- [1,(-1),2,(-2)], distance' dx dy==3]
 
 kingMoves :: Pos -> [Pos]
-kingMoves (x,y) = [(x+dx,y+dy) | dx <- [0,1,(-1)],dy <- [0,1,(-1)], distance' dx dy == 1]
+kingMoves (x,y) = [(x+dx,y+dy) | dx <- [0,1,(-1)],dy <- [0,1,(-1)], distance' dx dy > 0]
 
 pawnMoves :: Pos -> Player -> [Pos]
 pawnMoves (x,y) t = map (add (x,y)) $ filter (\x->jumpWidth x <= 2) $ (,) <$> [-1,0,1] <*> vert

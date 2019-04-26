@@ -1,5 +1,6 @@
 module Chess.Movement (
     module Chess.Figures,
+    module Chess.CoreMovement, -- Do not Export after debug
     validMoves,
     allMoves,
     moves,
