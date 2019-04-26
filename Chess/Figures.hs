@@ -27,7 +27,8 @@ piecesForPlayer :: Board -> Player -> [Chesspiece]
 piecesForPlayer b d = filter (\cp -> player cp == d) b
 
 instance Show Chesspiece where 
-    show c = "("++ smallColor (player c) ++shortName (typ c) ++ ")"
+    show c = "("++ smallColor (player c) ++shortName (typ c) ++ ")" -- LIVE 
+    --show c = "("++ smallColor (player c) ++shortName (typ c) ++ "@"++ show (pos c)++")" -- DEBUG 
 
 printBoard :: Board -> String 
 printBoard b = foldl (++) "" [printLine b l | l<-[1..8]]

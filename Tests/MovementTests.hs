@@ -60,8 +60,8 @@ testQBBF = 26 ~=? length (validMoves qbbf W)
 qbbe = addPawn qaf (5,6) B 
 -- 3 Moves for King 
 -- 1 Move onto Pawn 
--- 22 Moves for Queen
-testQBBE = 26 ~=? length (validMoves qbbe W)
+-- 23 Moves for Queen
+testQBBE = 27 ~=? length (validMoves qbbe W)
 
 qaeob = addQueen safeKings (5,8) W 
 -- 3 Moves for King 
@@ -83,13 +83,13 @@ kaf = addKnight safeKings (5,5) W
 -- 8 Moves for Knight 
 testKAF = (3+8) ~=? length (validMoves kaf W)
 
-kbbf = addPawn kaf (6,7) W 
+kbbf = addPawn kaf (6,3) W 
 -- 3 Moves for King 
 -- 1 Move for Pawn 
 -- 7 Moves for Knight
 testKBBF = (3+1+7) ~=? length (validMoves kbbf W)
 
-kbbe = addPawn kaf (6,7) B 
+kbbe = addPawn kaf (6,3) B 
 -- 3 Moves for King 
 -- 1 Move onto Pawn 
 -- 7 Moves for Knight
@@ -153,8 +153,8 @@ testTAF = (3+7+7) ~=? length (validMoves taf W)
 tbbf = addPawn taf (5,6) W 
 -- 3 Moves for King 
 -- 1 Move for Pawn 
--- All Tower Moves minus the 3 fields blocked by pawn 
-testTBBF = (3+1+14-3) ~=? length (validMoves tbbf W)
+-- All Tower Moves minus the 4 fields blocked by pawn 
+testTBBF = (3+1+14-4) ~=? length (validMoves tbbf W)
 
 tbbe = addPawn taf (5,6) B 
 -- 3 Moves for King 
@@ -164,6 +164,5 @@ testTBBE = (3+1+14-3) ~=? length (validMoves tbbe W)
 
 taeob = addTower safeKings (5,8) W 
 -- 3 Moves for King 
--- 14 Moves for Tower
--- minus one for my king  
-testTAEOB = (3+7+7-1) ~=? length (validMoves taeob W)
+-- 14 Moves for Tower  
+testTAEOB = (3+7+7) ~=? length (validMoves taeob W)

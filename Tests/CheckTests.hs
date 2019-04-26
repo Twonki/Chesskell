@@ -60,9 +60,9 @@ checkLimitedMoveTests = TestList[
     ]
 
 nich = addTower safeKings (8,5) W
-testNICH = 1 ~=? length (validMoves nich B) 
+testNICH = 2 ~=? length (validMoves nich B) 
 nicv = addTower safeKings (6,8) W
-testNICV = 1 ~=? length (validMoves nicv B) 
+testNICV = 2 ~=? length (validMoves nicv B) 
 
 sa = (addTower safeKings (8,7) W)
 -- The King can either move away or strike the tower, however i cannot move diagonally as it would mean another check
