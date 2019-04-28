@@ -1,4 +1,8 @@
 /*.ho
 /*.hi
 /*.o
-
+/dist/**
+/dist
+/dist-newstyle/**
+/dist-newstyle
+.ghc.environment.*
