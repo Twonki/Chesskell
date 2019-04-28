@@ -12,6 +12,7 @@ module Chess.Movement (
 import  Data.List.Split (splitOn)
 import  Chess.Figures
 import  Chess.CoreMovement
+import Control.Monad((>>=), join)
 
 moveTo :: Board -> Chesspiece -> Pos -> Maybe Board
 moveTo b f p = 
@@ -31,15 +32,16 @@ moves :: Board -> Chesspiece -> [Maybe Board]
 moves b fig@(Chesspiece t p c) 
     | t == Pawn = validPawnMoves b fig 
     | otherwise = moveTo b fig <$> possibleMoves
-    where b' = removePiece b fig   
-          routine = concat . map (moveFilter b') .  map ($p) 
-          possibleMoves = 
+    where 
+        b' = removePiece b fig   
+        routine = join . fmap (moveFilter b') .  fmap ($p) 
+        possibleMoves = 
             case t  of  
-              Bishop -> routine [risingDigL,fallingDigR,risingDigR,fallingDigL]
-              Tower ->  routine [ups,downs,lefts,rights]
-              Queen ->  routine $ [ups,downs,lefts,rights] ++ [risingDigL,fallingDigR,risingDigR,fallingDigL]
-              King ->   routine [kingMoves]
-              Knight -> routine [knightMoves]
+            Bishop -> routine [risingDigL,fallingDigR,risingDigR,fallingDigL]
+            Tower ->  routine [ups,downs,lefts,rights]
+            Queen ->  routine $ [ups,downs,lefts,rights] ++ [risingDigL,fallingDigR,risingDigR,fallingDigL]
+            King ->   routine [kingMoves]
+            Knight -> routine [knightMoves]   
 
 validPawnMoves :: Board -> Chesspiece -> [Maybe Board]
 -- Input: current Board, Pawn 
