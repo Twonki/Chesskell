@@ -1,6 +1,7 @@
 module Chess.Figures where 
 
 import Data.Maybe(isNothing)
+import Control.Monad(join)
 
 data Figure = Pawn | Knight | Bishop | Tower | Queen | King
     deriving (Eq,Show,Read)
@@ -31,10 +32,10 @@ instance Show Chesspiece where
     --show c = "("++ smallColor (player c) ++shortName (typ c) ++ "@"++ show (pos c)++")" -- DEBUG 
 
 printBoard :: Board -> String 
-printBoard b = foldl (++) "" [printLine b l | l<-[1..8]]
+printBoard b = join [printLine b l | l<-[1..8]]
 
 printLine :: Board -> Int -> String 
-printLine b l = foldr  (++) "|\n" [printCell b (x,l)| x<-[1..8]] 
+printLine b l = join $ "|\n":[printCell b (x,l)| x<-[1..8]] 
 
 printCell :: Board -> Pos -> String
 printCell b p = 
@@ -53,7 +54,7 @@ draw :: Chesspiece -> Pos -> Chesspiece
 draw f t = Chesspiece {typ = (typ f),pos=t,player=(player f)}
 
 takenPositions :: Board -> [Pos]
-takenPositions b = map (\t->pos t) b
+takenPositions = map (\t->pos t)
 
 removePiece :: Board -> Chesspiece -> Board
 removePiece b p = filter (\c->c/=p) b  
@@ -82,9 +83,9 @@ missingPieces b p = mask pieces difs -- i select all figures where i don't have 
         numberIfFull Queen = 1
         numberIfFull _ = 2
         pieces = [Pawn,Bishop,Knight,Tower,Queen,King] --a full set of figures
-        pBoard = map typ $ piecesForPlayer b p 
-        nums = map (\x-> length (filter (\a->a == x) pBoard)) pieces -- the amount of figures i have for each type
-        expectedNums = map numberIfFull pieces -- the normal amount of figures a full set would have
+        pBoard = typ <$> piecesForPlayer b p 
+        nums = (\x-> length (filter (\a->a == x) pBoard)) <$> pieces -- the amount of figures i have for each type
+        expectedNums = numberIfFull <$> pieces -- the normal amount of figures a full set would have
         difs = zipWith (/=) nums expectedNums  -- Bool-List if i have as many figures as i could max have
 
 initialBoard :: Board 

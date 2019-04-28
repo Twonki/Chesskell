@@ -6,14 +6,12 @@ module Chess.Movement (
     moveTo,
     clearMaybeBoard,
     check,
-    checkmate,
+    checkmate
 )where
 
 import  Data.List.Split (splitOn)
 import  Chess.Figures
 import  Chess.CoreMovement
-import  Control.Monad (liftM)
-
 
 moveTo :: Board -> Chesspiece -> Pos -> Maybe Board
 moveTo b f p = 

@@ -13,6 +13,7 @@ import Tests.CheckTests
 import Tests.PawnReplacementTests
 import Tests.MovementTests
 import Tests.CoreMovementTests
+import Tests.MoveToTests
 
 allTests = TestList [
    TestLabel "PawnTests" allPawnTests
@@ -25,6 +26,7 @@ allTests = TestList [
    ,TestLabel "Pawn Replacement" allPawnReplacementTests
    ,TestLabel "Core Movement Tests" allCoreMovementTests
    ,TestLabel "Movement Tests" allMovementTests
+   ,TestLabel "Move To Tests" allMoveToTests
    ]
 
 tests = hUnitTestToTests allTests

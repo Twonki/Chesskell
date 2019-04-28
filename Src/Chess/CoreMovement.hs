@@ -14,7 +14,7 @@ reach' :: [Pos]
 reach' = zipWith (,) reach reach
 
 line ::(Pos->Pos->Pos) -> Pos -> [Pos]
-line f p = map (f p) reach' 
+line f p = (f p) <$> reach' 
 
 -- All positions moving 0 +
 ups :: Pos -> [Pos]
@@ -51,7 +51,7 @@ stopAt (x:xs) b = if x==b then [x] else x : stopAt xs b
 -- As there cannot be two items on the same spot
 -- It's enough to check every pos and get the shortest one
 stopAtNearest :: [Pos] -> [Pos] -> [Pos]
-stopAtNearest xs ss = minimumBy (compare`on`length) $ map (stopAt xs) ss
+stopAtNearest xs ss = minimumBy (compare`on`length) $ stopAt xs <$> ss
 
 knightMoves :: Pos -> [Pos]
 knightMoves (x,y) = [(x+dx,y+dy) | dx <-[1,(-1),2,(-2)] , dy <- [1,(-1),2,(-2)], distance' dx dy==3]

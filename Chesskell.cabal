@@ -44,19 +44,20 @@ Test-Suite HUnitTestSuite
   main-is:             UnitTests.hs
   hs-source-dirs:      Test
                        Src
-  other-modules:      Chess.CoreMovement,
-                      Chess.Figures,
-                      Chess.Metrics,
-                      Chess.Movement,
-                      Tests.CheckTests,
-                      Tests.CoreMovementTests,
-                      Tests.FairMetricTests,
-                      Tests.InitialBoardTests,
-                      Tests.MissingPiecesTests,
-                      Tests.MovementTests,
-                      Tests.PawnReplacementTests,
-                      Tests.PawnTests,
-                      Tests.TestSuite
+  other-modules:       Chess.CoreMovement,
+                       Chess.Figures,
+                       Chess.Metrics,
+                       Chess.Movement,
+                       Tests.CheckTests,
+                       Tests.CoreMovementTests,
+                       Tests.FairMetricTests,
+                       Tests.InitialBoardTests,
+                       Tests.MissingPiecesTests,
+                       Tests.MovementTests,
+                       Tests.PawnReplacementTests,
+                       Tests.PawnTests,
+                       Tests.MoveToTests,
+                       Tests.TestSuite
   build-depends:       base,
                        test-framework,
                        test-framework-hunit,
