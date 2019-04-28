@@ -1,4 +1,4 @@
-module Game where
+module Main where
 
 import Chess.Movement
 import Chess.Metrics

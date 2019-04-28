@@ -51,13 +51,19 @@ executable Chesskell
   main-is:             Game.hs
 
   -- Modules included in this executable, other than Main.
-  other-modules: Chess.Figures , Chess.CoreMovement , Chess.Movement , Chess.Metrics
+  other-modules:      Chess.Figures,
+                      Chess.CoreMovement, 
+                      Chess.Movement, 
+                      Chess.Metrics
   
   -- LANGUAGE extensions used by modules in this package.
   -- other-extensions:
 
   -- Other library packages from which modules are imported.
-  build-depends:       base ^>=4.12.0.0, HUnit ^>=1.6.0.0, split ^>=0.2.3.3
+  build-depends:       base ^>=4.12.0.0, 
+                       HUnit ^>=1.6.0.0,
+                       split ^>=0.2.3.3, 
+                       Cabal
 
   -- Directories containing source files.
   hs-source-dirs:      Src
@@ -65,3 +71,29 @@ executable Chesskell
   -- Base language which the package is written in.
   default-language:    Haskell2010
 
+Test-Suite HUnitTestSuite
+  type:                exitcode-stdio-1.0
+  main-is:             UnitTests.hs
+  hs-source-dirs:      Test
+                       Src
+  
+  other-modules:      Chess.CoreMovement,
+                      Chess.Figures,
+                      Chess.Metrics,
+                      Chess.Movement,
+                      Tests.CheckTests,
+                      Tests.CoreMovementTests,
+                      Tests.FairMetricTests,
+                      Tests.InitialBoardTests,
+                      Tests.MissingPiecesTests,
+                      Tests.MovementTests,
+                      Tests.PawnReplacementTests,
+                      Tests.PawnTests,
+                      Tests.TestSuite
+
+  build-depends:       base,
+                       test-framework,
+                       test-framework-hunit,
+                       HUnit,
+                       split ^>=0.2.3.3,
+  default-language: Haskell2010

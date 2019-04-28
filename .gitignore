@@ -6,3 +6,4 @@
 /dist-newstyle/**
 /dist-newstyle
 .ghc.environment.*
+cabal.project.*

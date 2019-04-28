@@ -1,2 +1,2 @@
 import Distribution.Simple
-main = Game
+main = defaultMain

@@ -1,6 +1,9 @@
-module AllTests where
+module Main where
 
 import Test.HUnit
+
+import Test.Framework
+import Test.Framework.Providers.HUnit
 
 import Tests.PawnTests
 import Tests.InitialBoardTests
@@ -10,8 +13,6 @@ import Tests.CheckTests
 import Tests.PawnReplacementTests
 import Tests.MovementTests
 import Tests.CoreMovementTests
-
-import Tests.TestSuite -- DEBUG ONLY 
 
 allTests = TestList [
    TestLabel "PawnTests" allPawnTests
@@ -25,3 +26,6 @@ allTests = TestList [
    ,TestLabel "Core Movement Tests" allCoreMovementTests
    ,TestLabel "Movement Tests" allMovementTests
    ]
+
+tests = hUnitTestToTests allTests
+main = defaultMain tests
