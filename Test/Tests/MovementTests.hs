@@ -54,6 +54,7 @@ testKingBlockedByEnemyMoves = 8 ~=? length ( validMoves kingBlockedByEnemy W)
 allQueenMoves = TestList [
     TestLabel "All Free" testQueenAllFreeMoves
     ,TestLabel "Blocked by Straight Close Friend" testQueenBlockedByCloseFriend
+    ,TestLabel "Blocked by Straight Far Friend" testQueenBlockedByFarFriend
     ,TestLabel "Blocked by Straight Close Enemy" testQueenBlockedByCloseEnemy
     ,TestLabel "Blocked by Straight Far Enemy" testQueenBlockedByFarEnemy
     ,TestLabel "Blocked by Straight Far Far Enemy" testQueenBlockedByFarerEnemy
@@ -75,6 +76,12 @@ queenBlockedByCloseFriend = addPawn queenAllFree (5,6) W
 -- 1 Move for Pawn
 -- 22 Moves for Queen
 testQueenBlockedByCloseFriend = (3+1+22) ~=? length (validMoves queenBlockedByCloseFriend W)
+
+queenBlockedByFarFriend = addPawn queenAllFree (5,7) W 
+-- 3 Moves for King
+-- 1 Move for Pawn
+-- 23 Moves for Queen
+testQueenBlockedByFarFriend = (3+1+23) ~=? length (validMoves queenBlockedByFarFriend W)
 
 queenBlockedByCloseEnemy = addPawn queenAllFree (5,6) B 
 -- 3 Moves for King 
@@ -130,6 +137,9 @@ allKnightMoves = TestList [
     ,TestLabel "Blocked by Friend" testKnightBlockedByFriend
     ,TestLabel "Blocked by Enemy" testKnightBlockedByEnemy
     ,TestLabel "At Edge of Board" testKnightAtTheEdge
+    ,TestLabel "Two Fields are Blocked by Friends" testKnightBlockedByTwoFriends
+    ,TestLabel "Two Fields are Blocked by Enemies" testKnightBlockedByTwoEnemies
+    ,TestLabel "One Field blocked by Enemy, One by Friend" testKnightBlockedByFriendAndEnemy
  ]
 
 knightAllFree = addKnight safeKings (5,5) W 
@@ -153,13 +163,36 @@ knightAtTheEdge = addKnight safeKings (5,8) W
 -- 3 Moves for King 
 -- 4 Moves for Knight 
 testKnightAtTheEdge = (3+4) ~=? length (validMoves knightAtTheEdge W)
-    
+
+
+knightBlockedByTwoFriends = addPawn knightBlockedByFriend (6,7) W 
+-- 3 Moves for King 
+-- 2 Moves for Pawns 
+-- 6 Moves for Knight
+testKnightBlockedByTwoFriends = (3+2+6) ~=? length (validMoves knightBlockedByTwoFriends W)
+
+
+knightBlockedByTwoEnemies = addPawn knightBlockedByEnemy (6,7) B 
+-- 3 Moves for King 
+-- 2 Move onto Pawn 
+-- 6 Moves for Knight
+testKnightBlockedByTwoEnemies = (3+2+6) ~=? length (validMoves knightBlockedByTwoEnemies W)
+
+
+knightBlockedByFriendAndEnemy = addPawn knightBlockedByFriend (6,7) B 
+-- 3 Moves for King 
+-- 1 Move onto Pawn
+-- 1 Move for friendly Pawn
+-- 6 Other Moves for Knight
+testKnightBlockedByFriendAndEnemy = (3+1+1+6) ~=? length (validMoves knightBlockedByFriendAndEnemy W)
+
 -- =======================================
 -- ========== Bishop =====================
 -- =======================================
 allBishopMoves = TestList [
     TestLabel "All Free" testBishopAllFree
-    ,TestLabel "Blocked by Friend" testBishopBlockedByCloseFriend
+    ,TestLabel "Blocked by Close Friend" testBishopBlockedByCloseFriend
+    ,TestLabel "Blocked by Far Friend" testBishopBlockedByFarFriend
     ,TestLabel "Blocked by Close Enemy" testBishopBlockedByCloseEnemy
     ,TestLabel "Blocked by Far Enemy" testBishopBlockedByFarEnemy
     ,TestLabel "At Edge of Board" testBishopAtTheEdge
@@ -168,30 +201,38 @@ allBishopMoves = TestList [
 bishopAllFree = addBishop safeKings (5,5) W 
 -- 3 Moves for King 
 -- 12 Moves for Bishop 
-testBishopAllFree = 15 ~=? length (validMoves bishopAllFree W)
+testBishopAllFree = (3+12) ~=? length (validMoves bishopAllFree W)
 
 bishopBlockedByCloseFriend = addPawn bishopAllFree (5,6) W 
 -- 3 Moves for King 
 -- 1 Move for Pawn 
--- 11 Moves for Bishop
-testBishopBlockedByCloseFriend = 15 ~=? length (validMoves bishopBlockedByCloseFriend W)
+-- 11 Moves for Bishop 
+testBishopBlockedByCloseFriend = (3+1+11) ~=? length (validMoves bishopBlockedByCloseFriend W)
+
+
+bishopBlockedByFarFriend = addPawn bishopAllFree (5,7) W 
+-- 3 Moves for King 
+-- 1 Move for Pawn 
+-- 12 Moves for Bishop
+testBishopBlockedByFarFriend = (3+1+12) ~=? length (validMoves bishopBlockedByFarFriend W)
+
 
 bishopBlockedByCloseEnemy = addPawn bishopAllFree (5,6) B 
 -- 3 Moves for King 
 -- 1 Move onto Pawn 
 -- 11 Moves for Bishop
-testBishopBlockedByCloseEnemy = 15 ~=? length (validMoves bishopBlockedByCloseEnemy W)
+testBishopBlockedByCloseEnemy = (3+1+11) ~=? length (validMoves bishopBlockedByCloseEnemy W)
 
 bishopBlockedByFarEnemy = addPawn bishopAllFree (6,7) B 
 -- 3 Moves for King 
 -- 1 Move onto Pawn 
 -- 12 Moves for Bishop
-testBishopBlockedByFarEnemy = 16 ~=? length (validMoves bishopBlockedByFarEnemy W)
+testBishopBlockedByFarEnemy = (3+1+12) ~=? length (validMoves bishopBlockedByFarEnemy W)
 
 bishopAtTheEdge = addBishop safeKings (5,8) W 
 -- 3 Moves for King 
 -- 7 Moves for Bishop 
-testBishopAtTheEdge = 10 ~=? length (validMoves bishopAtTheEdge W)
+testBishopAtTheEdge = (3+7) ~=? length (validMoves bishopAtTheEdge W)
         
 -- =======================================
 -- ========== Tower ======================
@@ -199,6 +240,7 @@ testBishopAtTheEdge = 10 ~=? length (validMoves bishopAtTheEdge W)
 allTowerMoves = TestList [
     TestLabel "All Free" testTowerAllFree
     ,TestLabel "Blocked by Close Friend" testTowerBlockedByCloseFriend
+    ,TestLabel "Blocked by Far Friend" testTowerBlockedByFarFriend
     ,TestLabel "Blocked by Close Enemy" testTowerBlockedByCloseEnemy
     ,TestLabel "Blocked by Far Enemy" testTowerBlockedByFarEnemy
     ,TestLabel "Blocked by Far Enemy Other Direction" testTowerBlockedByFarEnemyOnOtherSide
@@ -219,6 +261,13 @@ towerBlockedByCloseFriend = addPawn towerAllFree (5,6) W
 -- 1 Move for Pawn 
 -- All Tower Moves minus the 4 fields blocked by pawn 
 testTowerBlockedByCloseFriend = (3+1+14-4) ~=? length (validMoves towerBlockedByCloseFriend W)
+
+towerBlockedByFarFriend = addPawn towerAllFree (5,7) W 
+-- 3 Moves for King 
+-- 1 Move for Pawn 
+-- All Tower Moves minus the 3 fields blocked by pawn 
+testTowerBlockedByFarFriend = (3+1+14-3) ~=? length (validMoves towerBlockedByFarFriend W)
+
 
 towerBlockedByCloseEnemy = addPawn towerAllFree (5,6) B 
 -- 3 Moves for King 
