@@ -1,4 +1,4 @@
-module Tests.CheckTests (checkTests,checkMateTests,checkLimitedMoveTests) where
+module Tests.Game.CheckTests (checkTests,checkMateTests,checkLimitedMoveTests) where
 
 import Tests.TestSuite
 

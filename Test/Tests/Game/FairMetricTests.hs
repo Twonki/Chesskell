@@ -1,4 +1,4 @@
-module Tests.FairMetricTests (allFairMetricTests) where
+module Tests.Game.FairMetricTests (allFairMetricTests) where
 
 import Tests.TestSuite
 

@@ -1,4 +1,4 @@
-module Tests.MoveToTests (allMoveToTests) where
+module Tests.Core.MoveToTests (allMoveToTests) where
 
 import Data.Maybe(isNothing)
 import Tests.TestSuite

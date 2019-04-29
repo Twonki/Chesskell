@@ -1,4 +1,4 @@
-module Tests.PawnReplacementTests (allPawnReplacementTests) where
+module Tests.Game.PawnReplacementTests (allPawnReplacementTests) where
     
 import Tests.TestSuite
 

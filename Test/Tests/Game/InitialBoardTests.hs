@@ -1,4 +1,4 @@
-module Tests.InitialBoardTests (allBoardTests) where
+module Tests.Game.InitialBoardTests (allBoardTests) where
 
 import Tests.TestSuite
 

@@ -5,15 +5,15 @@ import Test.HUnit
 import Test.Framework
 import Test.Framework.Providers.HUnit
 
-import Tests.PawnTests
-import Tests.InitialBoardTests
-import Tests.FairMetricTests
-import Tests.MissingPiecesTests
-import Tests.CheckTests
-import Tests.PawnReplacementTests
-import Tests.MovementTests
-import Tests.CoreMovementTests
-import Tests.MoveToTests
+import Tests.Movement.PawnTests
+import Tests.Game.InitialBoardTests
+import Tests.Game.FairMetricTests
+import Tests.Core.MissingPiecesTests
+import Tests.Game.CheckTests
+import Tests.Game.PawnReplacementTests
+import Tests.Movement.MovementTests
+import Tests.Core.CoreMovementTests
+import Tests.Core.MoveToTests
 
 allTests = TestList [
    TestLabel "PawnTests" allPawnTests

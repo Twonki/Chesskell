@@ -1,4 +1,4 @@
-module Tests.MissingPiecesTests (allMissingPiecesTests) where
+module Tests.Core.MissingPiecesTests (allMissingPiecesTests) where
 
 import Tests.TestSuite
 
