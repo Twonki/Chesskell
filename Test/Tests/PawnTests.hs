@@ -3,50 +3,50 @@ module Tests.PawnTests (allPawnTests) where
 import Tests.TestSuite
 
 allPawnTests = TestList [
-   TestLabel  "Initial Moves BlackPawn" testIMBP
-   ,TestLabel "Initial Moves WhitePawn" testIMWP
-   ,TestLabel "Strike  Moves BlackPawn" testSMBP
-   ,TestLabel "Strike  Moves WhitePawn" testSMWP
-   ,TestLabel "Strike  Moves BlackPawn II" testSMBP2
-   ,TestLabel "Strike  Moves WhitePawn II" testSMWP2
-   ,TestLabel "Blocked Moves BlackPawn" testBMBP
-   ,TestLabel "Blocked Moves WhitePawn" testBMWP
-   ,TestLabel "Blocked Moves Ally BlackPawn" testBMABP
-   ,TestLabel "Blocked Moves Ally WhitePawn" testBMAWP
-   ,TestLabel "Initial Move  Blocked BlackPawn" testIMBBP
-   ,TestLabel "Initial Move  Blocked WhitePawn" testIMBWP
+   TestLabel  "Initial Moves BlackPawn" testInitialMovesBlackPawn
+   ,TestLabel "Initial Moves WhitePawn" testInitialMovesWhitePawn
+   ,TestLabel "Strike  Moves BlackPawn" testStrikeMovesBlackPawn
+   ,TestLabel "Strike  Moves WhitePawn" testStrikeMovesWhitePawn
+   ,TestLabel "Strike  Moves BlackPawn II" testDoubleStrikeMovesBlackPawn
+   ,TestLabel "Strike  Moves WhitePawn II" testDoubleStrikeMovesWhitePawn
+   ,TestLabel "Blocked Moves BlackPawn" testBlockedBlackPawn
+   ,TestLabel "Blocked Moves WhitePawn" testBlockedWhitePawn
+   ,TestLabel "Blocked Moves Ally BlackPawn" testBlockedByAllyBlackPawn
+   ,TestLabel "Blocked Moves Ally WhitePawn" testBlockedByAllyWhitePawn
+   ,TestLabel "Initial Move  Blocked BlackPawn" testInitialMoveBlockedBlackPawn
+   ,TestLabel "Initial Move  Blocked WhitePawn" testInitialMoveBlockedWhitePawn
    ]
 
 -- One Step + One Wide Step
-testIMBP = 2 ~=? countMoves (moves bor bp)
+testInitialMovesBlackPawn = 2 ~=? countMoves (moves bor bp)
     where 
         wp = Chesspiece Pawn (2,7) W 
         bp = Chesspiece Pawn (7,2) B
         bor = wp:bp:safeKings
 
 -- One Step + One Wide Step
-testIMWP = 2 ~=? countMoves (moves bor wp)
+testInitialMovesWhitePawn = 2 ~=? countMoves (moves bor wp)
     where 
         wp = Chesspiece Pawn (2,7) W 
         bp = Chesspiece Pawn (7,2) B
         bor = wp:bp:safeKings
 
 -- One Step + One Strike Step
-testSMBP = 2 ~=? countMoves (moves bor bp)
+testStrikeMovesBlackPawn = 2 ~=? countMoves (moves bor bp)
     where 
         wp = Chesspiece Pawn (6,6) W 
         bp = Chesspiece Pawn (5,5) B
         bor = wp:bp:safeKings
 
 -- One Step + One Strike Step        
-testSMWP = 2 ~=? countMoves (moves bor wp)
+testStrikeMovesWhitePawn = 2 ~=? countMoves (moves bor wp)
     where 
         wp = Chesspiece Pawn (6,6) W 
         bp = Chesspiece Pawn (5,5) B
         bor = wp:bp:safeKings
 
 -- One Step + two Strike Steps    
-testSMBP2 = 3 ~=? countMoves (moves bor bp)
+testDoubleStrikeMovesBlackPawn = 3 ~=? countMoves (moves bor bp)
     where 
         wp = Chesspiece Pawn (6,6) W 
         wp2 = Chesspiece Pawn (4,6) W 
@@ -54,7 +54,7 @@ testSMBP2 = 3 ~=? countMoves (moves bor bp)
         bor = wp:bp:wp2:safeKings
 
 -- One Step + two Strike Step        
-testSMWP2 = 3 ~=? countMoves (moves bor wp)
+testDoubleStrikeMovesWhitePawn = 3 ~=? countMoves (moves bor wp)
     where 
         wp = Chesspiece Pawn (6,6) W 
         bp = Chesspiece Pawn (5,5) B
@@ -62,42 +62,42 @@ testSMWP2 = 3 ~=? countMoves (moves bor wp)
         bor = wp:bp:bp2:safeKings
 
 -- No Steps - Pawn is blocked by enemy pawn
-testBMBP = 0 ~=? countMoves (moves bor bp)
+testBlockedBlackPawn = 0 ~=? countMoves (moves bor bp)
     where 
         wp = Chesspiece Pawn (5,6) W 
         bp = Chesspiece Pawn (5,5) B
         bor = wp:bp:safeKings
 
 -- No Steps - Pawn is blocked by enemy pawn
-testBMWP = 0 ~=? countMoves (moves bor wp)
+testBlockedWhitePawn = 0 ~=? countMoves (moves bor wp)
     where 
         wp = Chesspiece Pawn (5,6) W 
         bp = Chesspiece Pawn (5,5) B
         bor = wp:bp:safeKings
 
 -- No Steps - Pawn is blocked by ally
-testBMAWP = 0 ~=? countMoves (moves bor wp)
+testBlockedByAllyWhitePawn = 0 ~=? countMoves (moves bor wp)
     where 
         wp = Chesspiece Pawn (5,6) W 
         wp2 = Chesspiece Pawn (5,5) W
         bor = wp:wp2:safeKings
 
 -- No Steps - Pawn is blocked by ally
-testBMABP = 0 ~=? countMoves (moves bor bp)
+testBlockedByAllyBlackPawn = 0 ~=? countMoves (moves bor bp)
     where 
         bp2 = Chesspiece Pawn (5,6) B 
         bp = Chesspiece Pawn (5,5) B
         bor = bp:bp2:safeKings
 
 -- One Step - Wide Step is blocked by another ally piece
-testIMBBP = 1 ~=? countMoves (moves bor bp)
+testInitialMoveBlockedBlackPawn = 1 ~=? countMoves (moves bor bp)
     where 
         bp2 = Chesspiece Pawn (5,4) B 
         bp = Chesspiece Pawn (5,2) B
         bor = bp:bp2:safeKings
 
 -- One Step - Wide Step is blocked by another ally piece
-testIMBWP = 1 ~=? countMoves (moves bor wp)
+testInitialMoveBlockedWhitePawn = 1 ~=? countMoves (moves bor wp)
     where 
         wp = Chesspiece Pawn (5,7) W 
         wp2 = Chesspiece Pawn (5,5) W
