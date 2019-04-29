@@ -4,37 +4,38 @@ import Data.Maybe(isNothing)
 import Tests.TestSuite
 
 allMoveToTests = TestList [
-    TestLabel "Move on Free Field" testFF
-    ,TestLabel "Move on Ally Field" testAF
-    ,TestLabel "Move on Enemy Field" testEF
-    ,TestLabel "Move on Enemy Field - Enemy removed" testER
-    ,TestLabel "No Position-Restrictions in MoveTo I" testNoPR1
-    ,TestLabel "No Position-Restrictions in MoveTo II" testNoPR2
+    TestLabel "MoveTo on Free Field is Just" testFreeField
+    ,TestLabel "MoveTo on Ally Field is Nothing" testMoveOntoAllyField
+    ,TestLabel "MoveTo on Enemy Field is Just " testMoveOntoEnemyField
+    ,TestLabel "MoveTo on Enemy Field removes Enemy" testMoveOntoEnemyRemoval
+    ,TestLabel "MoveTo ignores Normal Piece Movement-Restrictions" testMoveToNoGameLogic1
+    ,TestLabel "MoveTo ignores normal Board-Size Restrictions" testMoveToNoGameLogic2
     ]
-
+-- A simple tower to perform these tests
 tower = Chesspiece Tower (5,5) W
+-- A Board with the single tower is my basecase
 base = tower:[]
 
 -- I can move here, it`s free
-testFF = False ~=? isNothing (moveTo base tower (5,6))
+testFreeField = False ~=? isNothing (moveTo base tower (5,6))
 
 -- A friendly piece is in the way
-af = addPawn base (5,6) W
+alliedField = addPawn base (5,6) W
 -- I cannot move here
-testAF = True ~=? isNothing (moveTo af tower (5,6))
+testMoveOntoAllyField = True ~=? isNothing (moveTo alliedField tower (5,6))
 
 -- A enemy piece is in the way
-ef = addPawn base (5,6) B
+enemyField = addPawn base (5,6) B
 -- I can move here
-testEF = False ~=? isNothing (moveTo ef tower (5,6))
+testMoveOntoEnemyField = False ~=? isNothing (moveTo enemyField tower (5,6))
 -- If i do, the pawn gets removed
-testER = 1 ~=? length ( fromJust' (moveTo ef tower (5,6)))
+testMoveOntoEnemyRemoval = 1 ~=? length ( fromJust' (moveTo enemyField tower (5,6)))
 
 -- I can move even if tower cannot move there
-testNoPR1 = False ~=? isNothing (moveTo base tower (6,6))
+testMoveToNoGameLogic1 = False ~=? isNothing (moveTo base tower (6,6))
 
 -- I can move outside the field
-testNoPR2 = False ~=? isNothing (moveTo base tower (10,22))
+testMoveToNoGameLogic2 = False ~=? isNothing (moveTo base tower (10,22))
 
 
 fromJust' :: Maybe Board -> Board 
