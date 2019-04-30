@@ -31,17 +31,8 @@ moveTo b f p =
 moves :: Board -> Chesspiece -> [Maybe Board]
 moves b fig@(Chesspiece t p c) 
     | t == Pawn = validPawnMoves b fig 
-    | otherwise = moveTo b fig <$> possibleMoves
-    where 
-        b' = removePiece b fig   
-        routine = join . fmap (moveFilter b') .  fmap ($p) 
-        possibleMoves = 
-            case t  of  
-            Bishop -> routine [risingDigL,fallingDigR,risingDigR,fallingDigL]
-            Tower ->  routine [ups,downs,lefts,rights]
-            Queen ->  routine $ [ups,downs,lefts,rights] ++ [risingDigL,fallingDigR,risingDigR,fallingDigL]
-            King ->   routine [kingMoves]
-            Knight -> routine [knightMoves]   
+    | otherwise = moveTo b fig <$> (moveFilter b') (possibleMoves fig)
+    where  b' = removePiece b fig
 
 validPawnMoves :: Board -> Chesspiece -> [Maybe Board]
 -- Input: current Board, Pawn 

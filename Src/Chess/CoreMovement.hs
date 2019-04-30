@@ -59,6 +59,15 @@ knightMoves (x,y) = [(x+dx,y+dy) | dx <-[1,(-1),2,(-2)] , dy <- [1,(-1),2,(-2)],
 kingMoves :: Pos -> [Pos]
 kingMoves (x,y) = [(x+dx,y+dy) | dx <- [0,1,(-1)],dy <- [0,1,(-1)], distance' dx dy > 0]
 
+bishopMoves :: Pos -> [Pos]
+bishopMoves p= [risingDigL,fallingDigR,risingDigR,fallingDigL] >>= ($p)
+
+towerMoves :: Pos -> [Pos]
+towerMoves p= [ups,downs,lefts,rights] >>= ($p)
+
+queenMoves :: Pos -> [Pos]
+queenMoves p = towerMoves p ++ bishopMoves p
+            
 pawnMoves :: Pos -> Player -> [Pos]
 pawnMoves (x,y) t = map (add (x,y)) $ filter (\x->jumpWidth x <= 2) $ (,) <$> [-1,0,1] <*> vert
     where 
@@ -67,6 +76,16 @@ pawnMoves (x,y) t = map (add (x,y)) $ filter (\x->jumpWidth x <= 2) $ (,) <$> [-
             | t == W             = [-1]
             | t == B && y == 2   = [1,2]
             | otherwise          = [1]
+
+possibleMoves :: Chesspiece -> [Pos]
+possibleMoves (Chesspiece Pawn _ _) = error "Pawns should not be put in here buddy"
+possibleMoves (Chesspiece t p _) = 
+    case t of 
+        King -> kingMoves p 
+        Knight -> knightMoves p 
+        Queen -> queenMoves p 
+        Tower -> towerMoves p
+        Bishop -> bishopMoves p
 
 -- stopAtNearest takes positions -> stoppers -> positions
 -- For my use it needs to be flipped
