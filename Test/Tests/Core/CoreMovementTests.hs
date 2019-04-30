@@ -1,6 +1,7 @@
 module Tests.Core.CoreMovementTests (allCoreMovementTests) where
 
 import Tests.TestSuite
+import Control.Monad(join)
 
 allCoreMovementTests = TestList [
     TestLabel "KingCoreMoves testStopped" allKingCoreMoves
@@ -18,7 +19,12 @@ allKingCoreMoves = TestList [
 
 testFreeKing = 8 ~=? length (kingMoves (5,5))
 testKingCorneredNoFilter = 8 ~=? length (kingMoves (8,8))
-testKingCorneredFiltered = 3 ~=? length ((moveFilter [Chesspiece King (8,8) W]) <$> (kingMoves (8,8)))
+testKingCorneredFiltered = 3 ~=? length filteredMoves'
+    where 
+        posmoves = kingMoves (8,8)
+        singularBoard = [Chesspiece King (8,8) W] -- Board with only my Knight
+        filteredMoves = (moveFilter singularBoard) <$> posmoves
+        filteredMoves' = join filteredMoves
 
 allKnightCoreMoves = TestList [
     TestLabel "Centered " testFreeKnight,
@@ -28,7 +34,12 @@ allKnightCoreMoves = TestList [
 
 testFreeKnight = 8 ~=? length (knightMoves (5,5))
 testKnightCorneredNotFiltered = 8 ~=? length (knightMoves (8,8))
-testKnightCorneredFiltered = 2 ~=? length ((moveFilter [Chesspiece Knight (8,8) W]) <$> (knightMoves (8,8)))
+testKnightCorneredFiltered = 2 ~=? length filteredMoves'
+    where 
+        posmoves = (knightMoves (8,8))
+        singularBoard = [Chesspiece Knight (8,8) W] -- Board with only my Knight
+        filteredMoves = (moveFilter singularBoard) <$> posmoves
+        filteredMoves' = join filteredMoves
 
 allLines = TestList [
     TestLabel "Rights Count" testRightsCount,
