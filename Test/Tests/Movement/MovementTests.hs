@@ -80,8 +80,8 @@ testQueenBlockedByCloseFriend = (3+1+22) ~=? length (validMoves queenBlockedByCl
 queenBlockedByFarFriend = addPawn queenAllFree (5,7) W 
 -- 3 Moves for King
 -- 1 Move for Pawn
--- 23 Moves for Queen
-testQueenBlockedByFarFriend = (3+1+23) ~=? length (validMoves queenBlockedByFarFriend W)
+-- 24 Moves for Queen
+testQueenBlockedByFarFriend = (3+1+24) ~=? length (validMoves queenBlockedByFarFriend W)
 
 queenBlockedByCloseEnemy = addPawn queenAllFree (5,6) B 
 -- 3 Moves for King 
@@ -115,13 +115,13 @@ testQueenBlockedDiagonalByFarEnemy = (3+1+24) ~=? length (validMoves queenBlocke
 
 queenBlockedDigByCloseFriend = addPawn queenAllFree (6,6) W 
 -- 3 Moves for King
--- 23 Moves for Queen
-testQueenBlockedDiagonalByCloseFriend = (3+23) ~=? length (validMoves queenBlockedDigByCloseFriend W)
+-- 24 Moves for Queen
+testQueenBlockedDiagonalByCloseFriend = (3+24) ~=? length (validMoves queenBlockedDigByCloseFriend W)
 
 queenBlockedDigByFarFriend = addPawn queenAllFree (7,7) W 
 -- 3 Moves for King 
--- 24 Moves for Queen
-testQueenBlockedDiagonalByFarFriend = (3+24) ~=? length (validMoves queenBlockedDigByFarFriend W)
+-- 26 Moves for Queen
+testQueenBlockedDiagonalByFarFriend = (3+26) ~=? length (validMoves queenBlockedDigByFarFriend W)
 
 
 queenAtTheEdge = addQueen safeKings (5,8) W 
@@ -167,9 +167,10 @@ testKnightAtTheEdge = (3+4) ~=? length (validMoves knightAtTheEdge W)
 
 knightBlockedByTwoFriends = addPawn knightBlockedByFriend (6,7) W 
 -- 3 Moves for King 
--- 2 Moves for Pawns 
+-- 1 Move for Pawn in Field
+-- 2 Moves for Pawn at Start 
 -- 6 Moves for Knight
-testKnightBlockedByTwoFriends = (3+2+6) ~=? length (validMoves knightBlockedByTwoFriends W)
+testKnightBlockedByTwoFriends = (3+1+2+6) ~=? length (validMoves knightBlockedByTwoFriends W)
 
 
 knightBlockedByTwoEnemies = addPawn knightBlockedByEnemy (6,7) B 
@@ -226,8 +227,8 @@ testBishopBlockedByCloseEnemy = (3+1+11) ~=? length (validMoves bishopBlockedByC
 bishopBlockedByFarEnemy = addPawn bishopAllFree (6,7) B 
 -- 3 Moves for King 
 -- 1 Move onto Pawn 
--- 12 Moves for Bishop
-testBishopBlockedByFarEnemy = (3+1+12) ~=? length (validMoves bishopBlockedByFarEnemy W)
+-- 11 Moves for Bishop
+testBishopBlockedByFarEnemy = (3+1+11) ~=? length (validMoves bishopBlockedByFarEnemy W)
 
 bishopAtTheEdge = addBishop safeKings (5,8) W 
 -- 3 Moves for King 
@@ -266,7 +267,7 @@ towerBlockedByFarFriend = addPawn towerAllFree (5,7) W
 -- 3 Moves for King 
 -- 1 Move for Pawn 
 -- All Tower Moves minus the 3 fields blocked by pawn 
-testTowerBlockedByFarFriend = (3+1+14-3) ~=? length (validMoves towerBlockedByFarFriend W)
+testTowerBlockedByFarFriend = (3+1+15-3) ~=? length (validMoves towerBlockedByFarFriend W)
 
 
 towerBlockedByCloseEnemy = addPawn towerAllFree (5,6) B 
@@ -285,7 +286,7 @@ towerBlockedByFarEnemyOtherSide = addPawn towerAllFree (5,3) B
 -- 3 Moves for King 
 -- 1 Move onto Pawn 
 -- All Tower Moves minus the 2 fields blocked by pawn 
-testTowerBlockedByFarEnemyOnOtherSide = (3+1+14-2) ~=? length (validMoves towerBlockedByFarEnemyOtherSide W)
+testTowerBlockedByFarEnemyOnOtherSide = (3+1+14-3) ~=? length (validMoves towerBlockedByFarEnemyOtherSide W)
 
 -- Enemy is on the edge, i can move normal
 towerBlockedByFarerEnemy = addPawn towerAllFree (5,8) B 
