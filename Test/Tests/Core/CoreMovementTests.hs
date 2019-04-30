@@ -18,7 +18,7 @@ allKingCoreMoves = TestList [
 
 testFreeKing = 8 ~=? length (kingMoves (5,5))
 testKingCorneredNoFilter = 8 ~=? length (kingMoves (8,8))
-testKingCorneredFiltered = 3 ~=? length (moveFilter [Chesspiece King (8,8) W] (kingMoves (8,8)))
+testKingCorneredFiltered = 3 ~=? length ((moveFilter [Chesspiece King (8,8) W]) <$> (kingMoves (8,8)))
 
 allKnightCoreMoves = TestList [
     TestLabel "Centered " testFreeKnight,
@@ -28,7 +28,7 @@ allKnightCoreMoves = TestList [
 
 testFreeKnight = 8 ~=? length (knightMoves (5,5))
 testKnightCorneredNotFiltered = 8 ~=? length (knightMoves (8,8))
-testKnightCorneredFiltered = 2 ~=? length (moveFilter [Chesspiece Knight (8,8) W] (knightMoves (8,8)))
+testKnightCorneredFiltered = 2 ~=? length ((moveFilter [Chesspiece Knight (8,8) W]) <$> (knightMoves (8,8)))
 
 allLines = TestList [
     TestLabel "Rights Count" testRightsCount,
