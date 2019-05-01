@@ -1,0 +1,68 @@
+cabal-version:       2.4
+-- The name of the package.
+name:                Chesskell
+version:             0.5.0
+synopsis:            A Game of Chess on Console
+
+-- A URL where users can report bugs.
+bug-reports:         https://github.com/Twonki/Chesskell/issues
+-- The license under which the package is released.
+license:             MIT
+license-file:        LICENSE
+-- The package author(s).
+author:              Leonhard Applis
+maintainer:          Leonhard.Applis@Protonmail.com
+category:            Game
+extra-source-files:  README.md
+
+
+executable Chesskell
+  -- .hs or .lhs file containing the Main module.
+  main-is:             Program.hs
+  -- Modules included in this executable, other than Main.
+  other-modules:      Chess.Figures,
+                      Chess.CoreMovement, 
+                      Chess.Movement, 
+                      Chess.Metrics,
+                      Chess.Game
+  -- LANGUAGE extensions used by modules in this package.
+  -- other-extensions:
+
+  -- Other library packages from which modules are imported.
+  build-depends:       base ^>=4.12.0.0, 
+                       HUnit ^>=1.6.0.0,
+                       split ^>=0.2.3.3, 
+                       Cabal
+
+  -- Directories containing source files.
+  hs-source-dirs:      Src
+  -- Base language which the package is written in.
+  default-language:    Haskell2010
+
+
+Test-Suite HUnitTestSuite
+  type:                exitcode-stdio-1.0
+  main-is:             UnitTests.hs
+  hs-source-dirs:      Test
+                       Src
+  other-modules:       Chess.CoreMovement,
+                       Chess.Figures,
+                       Chess.Metrics,
+                       Chess.Movement,
+                       Chess.Game,
+                       Tests.Game.CheckTests,
+                       Tests.Core.CoreMovementTests,
+                       Tests.Game.FairMetricTests,
+                       Tests.Game.InitialBoardTests,
+                       Tests.Core.MissingPiecesTests,
+                       Tests.Movement.MovementTests,
+                       Tests.Game.PawnReplacementTests,
+                       Tests.Movement.PawnTests,
+                       Tests.Core.MoveToTests,
+                       Tests.TestSuite
+  build-depends:       base,
+                       test-framework,
+                       test-framework-hunit,
+                       HUnit,
+                       split ^>=0.2.3.3,
+  default-language: Haskell2010

@@ -7,6 +7,31 @@ With the first steps I want to make a normal game of chess for two players on a 
 Further steps should include AI with the help of alpha-beta-pruning.
 
 This game is never made to be in a computational-competetive enviroment. It's rather about producing nice haskellcode and having some fun with the most expressive language :)
+
+## Build, Run and Test
+### Interactive
+To run the code, go to /Src and start your GHCI. 
+
+`You@GHCI> :load Game.hs`
+
+Should compile and load the Game. You can start the game with `You@Game> main`. 
+
+This will let you play the game. To manually inspect features, I recommend to go to /Test and load the UnitTests. 
+Part of the Unit-Tests is the *TestSuite.hs* which has a lot of useful functions and grants visibility on nearly every exposed item. 
+
+### With Cabal
+You can build, test and run the game with Cabal. For more Information on the setup, see [the cabal file](Chesskell.cabal).
+
+```
+$ cabal new-configure --enable-tests
+$ cabal new-build --enable tests
+$ cabal new-test
+$ cabal new-install
+```
+
+For the installation you need to have symlinks configured for your cabal. After that, you can invoke the game from anywhere on your machine. 
+
+If you're using windows, I highly recommend to change that. 
 ## Structure
 The file *Game.hs* contains the toplevel entrypoint for playing the game and checking all it`s features. 
 
@@ -23,6 +48,13 @@ The folder *src*:
 * *AI*(ToBeDone): Contains the alpha-beta pruning
 * *Game*(ToBeDone): Contains the game logic, putting all the pieces together and IO with the player.
 
+**Where to start reading?**
+
+I think the best way to start reading is
+
+Figures.hs -> CoreMovement.hs -> Movement.hs -> Game.hs
+
+This way it gets more complex and the required things in movement are known. 
 ## Contribution
 You're contribution is welcome! There are several topics you can help with:
 
