@@ -8,7 +8,11 @@ allPawnReplacementTests = TestList [
     TestLabel "All Missing - Double Finishers" testAllMissingReplaceWithDoubleFinishers,
     TestLabel "PieceCount Replacement Double Finishers" testPieceCountStaysSameWithDoubleFinishers,
     TestLabel "No Replacing" testNoReplacerMoves,
-    TestLabel "PieceCount No Replacing" testNoReplacerMovesPiececount
+    TestLabel "PieceCount No Replacing" testNoReplacerMovesPiececount,
+    TestLabel "Test White replacePawn (not moves)" testWhiteReplacer,
+    TestLabel "Test Black replacePawn (not moves)" testBlackReplacer,
+    TestLabel "Test White replacePawn (not moves) PieceCount" testWhiteReplacerPieceCount,
+    TestLabel "Test Black replacePawn (not moves) PieceCount" testBlackReplacerPieceCount
     ]
 
 -- There are all pieces missing on the board (except for Kings)
@@ -41,3 +45,19 @@ noreplacers = addPawn safeKings (4,3) W
 testNoReplacerMoves = 4 ~=? length ( validMoves noreplacers  W )
 -- There will never be more than 3 Figures if i replace one
 testNoReplacerMovesPiececount = True ~=? (all ((==) 3) $ map (length) ( validMoves noreplacers  W ))
+
+
+finisherWhite = Chesspiece Pawn (5,8) W
+finisherBoardWhite = finisherWhite : safeKings
+
+testWhiteReplacer = 5 ~=? length (replacePawn finisherBoardWhite finisherWhite)
+testWhiteReplacerPieceCount = True ~=? (all ((==) 3) $ length <$> options)
+    where options = replacePawn finisherBoardWhite finisherWhite
+
+
+finisherBlack = Chesspiece Pawn (5,1) B
+finisherBoardBlack = finisherBlack : safeKings
+
+testBlackReplacer = 5 ~=? length (replacePawn finisherBoardBlack finisherBlack)
+testBlackReplacerPieceCount = True ~=? (all ((==) 3) $ length <$> options)
+    where options = replacePawn finisherBoardBlack finisherBlack

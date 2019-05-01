@@ -49,6 +49,7 @@ Test-Suite HUnitTestSuite
                        Chess.Figures,
                        Chess.Metrics,
                        Chess.Movement,
+                       Chess.Game,
                        Tests.Game.CheckTests,
                        Tests.Core.CoreMovementTests,
                        Tests.Game.FairMetricTests,

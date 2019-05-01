@@ -6,7 +6,8 @@ module Chess.Movement (
     moveTo,
     check,
     checkmate,
-    demaybefy
+    demaybefy,
+    replacePawn
 )where
 
 import  Data.List.Split (splitOn)
@@ -45,10 +46,14 @@ validPawnMoves :: Board -> Chesspiece -> [Maybe Board]
 -- Step 3: Filter for hittibility
 -- 3.1 only move forward if nothing 
 -- 3.2 only move diagonal if hittable (check moves on x for diagonality)
-validPawnMoves b fig@(Chesspiece t p c)
-        | length finishers > 0 = --Replace Logic
-            let replacingPawns = (\t -> draw fig t) <$> finishers
-            in  concat $ replacePawn' b <$> replacingPawns
+validPawnMoves b fig@(Chesspiece Pawn p c)
+        | length replacementPositions > 0 = --Replace Logic
+            let 
+                replaceTuples =  (\p ->(draw fig p,moveTo b fig p)) <$> replacementPositions
+                replaceTuples' = [(a,b) | (a,Just b) <- replaceTuples]
+                doReplace = (\(replacer,replacementBoard) -> replacePawn replacementBoard replacer)
+                replacementMoves = join $ doReplace <$> replaceTuples'
+            in  Just <$> replacementMoves
         | otherwise =  moveTo b fig <$> valids
     where 
         posMoves = pawnMoves p c
@@ -56,7 +61,7 @@ validPawnMoves b fig@(Chesspiece t p c)
         forwardMoves = [a |  a <- posMoves, fst a == fst p]
         attackFigs = filter (\y -> canAttack y fig) $ demaybefy [pieceOnPos b a | a <- attackMoves, not (free a b)]
         valids = [pos piece | piece <-  attackFigs] ++ [position | position <- forwardMoves , free position b]
-        finishers 
+        replacementPositions 
             | c == W = [a |  a <- valids, snd a == 1]
             | c == B = [a |  a <- valids, snd a == 8]
 
@@ -90,6 +95,3 @@ replacePawn b piece@(Chesspiece Pawn p c) =
         missing = missingPieces b' c
         replacers = (\mf -> Chesspiece{typ=mf,pos=p,player=c}) <$> missing
     in  [r:b' | r <- replacers] 
-
-replacePawn' :: Board -> Chesspiece -> [Maybe Board]
-replacePawn' b p= Just <$> replacePawn b p

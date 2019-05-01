@@ -3,6 +3,7 @@ module Tests.TestSuite (
     module Chess.CoreMovement,
     module Chess.Figures,
     module Chess.Metrics,
+    module Chess.Game,
     module Test.HUnit,
     safeKings,
     countMoves,
@@ -19,6 +20,7 @@ import Chess.Movement
 import Chess.Figures
 import Chess.CoreMovement
 import Chess.Metrics
+import Chess.Game
 import Test.HUnit
 
 -- Movement does not work if the kings are endangered! 
