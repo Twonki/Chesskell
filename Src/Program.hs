@@ -6,13 +6,28 @@ main :: IO ()
 main = do
     let g@(b,c) = initialGameState
     putStrLn "Hello, lets start Chess!"
-    inp <- getLine 
-    let s@(x,y) = read (inp) :: (Int,Int)
-    putStrLn (show s)
+    gameLoop g
 
-gameLoop :: GameState -> IO GameState
-gameLoop oldS@(b,c) = do 
-    putStrLn ("Its " ++ show c ++ " turn")
+gameLoop :: GameState -> IO ()
+gameLoop oldS@(b,c) = do
+    if(lost oldS c) 
+    then do
+        putStrLn (show c ++ " lost!") 
+    else do
+        putStrLn ("Its " ++ show c ++ " turn")
+        putStrLn (showBoard b)
+        move <- askMove
+        let newS = movePiece oldS move
+        if (newS == oldS) 
+            then 
+                do
+                    putStrLn "Invalid move! Try Again"
+                    gameLoop oldS
+            else 
+                gameLoop newS
+
+askMove :: IO Move
+askMove = do 
     putStrLn "Which piece to move?"
     inp <- getLine 
     let s = read (inp) :: (Int,Int)
@@ -20,12 +35,4 @@ gameLoop oldS@(b,c) = do
     inp2 <- getLine 
     let e = read (inp2) :: (Int,Int)
     putStrLn ("Move " ++ show s ++ " to " ++ show e)
-    let newS = movePiece oldS (s,e)
-    if (newS == oldS) 
-        then 
-            do
-                putStrLn "Invalid move! Try Again"
-                gameLoop oldS
-        else 
-            gameLoop newS
-            
+    return (s,e)

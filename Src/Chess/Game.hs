@@ -1,4 +1,16 @@
-module Chess.Game where 
+module Chess.Game (
+    GameState,
+    Move, 
+    changePlayer',
+    movePiece,
+    canPickUp,
+    lost,
+    won,
+    showBoard,
+    initialGameState
+)
+
+where 
 
 import Chess.Movement
 import Chess.Metrics
@@ -37,3 +49,5 @@ initialGameState = (initialBoard,W)
 demaybiebool :: Maybe Bool -> Bool 
 demaybiebool Nothing = False 
 demaybiebool (Just x) = x
+
+showBoard = printBoard
