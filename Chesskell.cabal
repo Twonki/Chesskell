@@ -18,12 +18,13 @@ extra-source-files:  README.md
 
 executable Chesskell
   -- .hs or .lhs file containing the Main module.
-  main-is:             Game.hs
+  main-is:             Program.hs
   -- Modules included in this executable, other than Main.
   other-modules:      Chess.Figures,
                       Chess.CoreMovement, 
                       Chess.Movement, 
-                      Chess.Metrics
+                      Chess.Metrics,
+                      Chess.Game
   -- LANGUAGE extensions used by modules in this package.
   -- other-extensions:
 

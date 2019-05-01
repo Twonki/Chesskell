@@ -27,7 +27,7 @@ safeKings :: Board
 safeKings = [Chesspiece King (1,1) W, Chesspiece King (8,8) B]
 
 countMoves :: [Maybe Board] -> Int 
-countMoves = length . clearMaybeBoard
+countMoves = length . demaybefy
 
 addPiece :: Board -> Chesspiece -> Board 
 addPiece b p = p : b

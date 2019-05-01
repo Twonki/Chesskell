@@ -4,9 +4,9 @@ module Chess.Movement (
     allMoves,
     moves,
     moveTo,
-    clearMaybeBoard,
     check,
-    checkmate
+    checkmate,
+    demaybefy
 )where
 
 import  Data.List.Split (splitOn)
@@ -29,7 +29,7 @@ moveTo b f p =
                 Just other -> removePiece b' other --I killed e
             
 moves :: Board -> Chesspiece -> [Maybe Board]
-moves b fig@(Chesspiece t p c) 
+moves b fig@(Chesspiece t _ _) 
     | t == Pawn = validPawnMoves b fig 
     | otherwise =
         let validMoves = join $ (moveFilter b') <$> possibleMoves fig
@@ -54,30 +54,23 @@ validPawnMoves b fig@(Chesspiece t p c)
         posMoves = pawnMoves p c
         attackMoves = [a |  a <- posMoves, fst a /= fst p]
         forwardMoves = [a |  a <- posMoves, fst a == fst p]
-        attackFigs = demaybefy [pieceOnPos b a | a <- attackMoves, not (free a b)]
-        attackFigs' = filter (\y -> canAttack y fig) attackFigs
-        validAttacks = [pos c | c <-  attackFigs'] -- Filter only attackables
-        validForward = [c | c <- forwardMoves , free c b] -- Filter only free fields
-        valids = validForward ++ validAttacks
+        attackFigs = filter (\y -> canAttack y fig) $ demaybefy [pieceOnPos b a | a <- attackMoves, not (free a b)]
+        valids = [pos piece | piece <-  attackFigs] ++ [position | position <- forwardMoves , free position b]
         finishers 
             | c == W = [a |  a <- valids, snd a == 1]
             | c == B = [a |  a <- valids, snd a == 8]
 
 -- Filter every possible moves and only allowes the one where i´m not in check
--- Required to kill a deadlock i produced with allmoves and check
 validMoves :: Board -> Player -> [Board]
 validMoves b p = filter (\l -> not (check l p)) $ (allMoves b p)
 
 -- Every reachable position, without check
 allMoves :: Board -> Player -> [Board]
-allMoves b p =  clearMaybeBoard (concat $ moves b <$> fs)
+allMoves b p =  demaybefy $ fs >>= moves b 
     where fs = piecesForPlayer b p 
 
-clearMaybeBoard :: [Maybe Board] -> [Board]
-clearMaybeBoard = demaybefy
-
 check :: Board -> Player -> Bool
-check b p = foldr (||) False $ not . hasKing <$> myFigures
+check b p = or $ not . hasKing <$> myFigures
     where   
         enemyMoves = allMoves b $ changePlayer p 
         myFigures = flip piecesForPlayer p <$> enemyMoves
@@ -99,4 +92,4 @@ replacePawn b piece@(Chesspiece Pawn p c) =
     in  [r:b' | r <- replacers] 
 
 replacePawn' :: Board -> Chesspiece -> [Maybe Board]
-replacePawn' b p= Just <$> (flip removePiece) p <$> replacePawn b p
+replacePawn' b p= Just <$> replacePawn b p
