@@ -49,7 +49,7 @@ testValidPickupBlack =
     True ~=? canPickUp (2,2) blackState 
 
 testInvalidPickupFigure = 
-    True ~=? canPickUp (2,7) whiteState 
+    False ~=? canPickUp (2,2) whiteState 
 
 testInvalidPickupNoFigure = 
-    True ~=? canPickUp (3,5) whiteState 
+    False ~=? canPickUp (5,5) whiteState 

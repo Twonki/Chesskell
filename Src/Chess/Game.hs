@@ -5,7 +5,6 @@ module Chess.Game (
     movePiece,
     canPickUp,
     lost,
-    won,
     showBoard,
     initialGameState
 )
@@ -36,18 +35,15 @@ movePiece g@(b,c) (s,e) =
     where f = pieceOnPos b s
 
 canPickUp:: Pos -> GameState -> Bool 
-canPickUp p (b,c) = demaybiebool $ fmap (((==) c) . player) f
+canPickUp p (b,c) = 
+    case f of 
+        Nothing -> False 
+        Just f' -> c == (player f')
     where f = pieceOnPos b p
 
--- Helpers 
 lost :: GameState -> Player -> Bool 
 lost g@(b,c) c' = checkmate b c'
-won g c = lost g (changePlayer c)
 
 initialGameState = (initialBoard,W)
-
-demaybiebool :: Maybe Bool -> Bool 
-demaybiebool Nothing = False 
-demaybiebool (Just x) = x
 
 showBoard = printBoard
