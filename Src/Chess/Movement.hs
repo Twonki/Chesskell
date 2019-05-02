@@ -6,14 +6,14 @@ module Chess.Movement (
     moveTo,
     check,
     checkmate,
-    demaybefy,
     replacePawn
 )where
 
-import  Data.List.Split (splitOn)
-import  Chess.Figures
-import  Chess.CoreMovement
+import Data.List.Split (splitOn)
+import Chess.Figures
+import Chess.CoreMovement
 import Control.Monad((>>=), join)
+import Data.Maybe(catMaybes)
 
 moveTo :: Board -> Chesspiece -> Pos -> Maybe Board
 moveTo b f p = 
@@ -59,7 +59,7 @@ validPawnMoves b fig@(Chesspiece Pawn p c)
         posMoves = pawnMoves p c
         attackMoves = [a |  a <- posMoves, fst a /= fst p]
         forwardMoves = [a |  a <- posMoves, fst a == fst p]
-        attackFigs = filter (\y -> canAttack y fig) $ demaybefy [pieceOnPos b a | a <- attackMoves, not (free a b)]
+        attackFigs = filter (\y -> canAttack y fig) $ catMaybes [pieceOnPos b a | a <- attackMoves, not (free a b)]
         valids = [pos piece | piece <-  attackFigs] ++ [position | position <- forwardMoves , free position b]
         replacementPositions 
             | c == W = [a |  a <- valids, snd a == 1]
@@ -71,7 +71,7 @@ validMoves b p = filter (\l -> not (check l p)) $ (allMoves b p)
 
 -- Every reachable position, without check
 allMoves :: Board -> Player -> [Board]
-allMoves b p =  demaybefy $ fs >>= moves b 
+allMoves b p =  catMaybes $ fs >>= moves b 
     where fs = piecesForPlayer b p 
 
 check :: Board -> Player -> Bool
@@ -82,12 +82,6 @@ check b p = or $ not . hasKing <$> myFigures
 
 checkmate :: Board -> Player -> Bool
 checkmate b p = [] == validMoves b p
-
-demaybefy :: [Maybe a] -> [a]
-demaybefy [] = []
-demaybefy (x:xs) = case x of 
-    Just x -> x : demaybefy xs
-    Nothing -> demaybefy xs
 
 replacePawn :: Board -> Chesspiece -> [Board]
 replacePawn b piece@(Chesspiece Pawn p c) = 

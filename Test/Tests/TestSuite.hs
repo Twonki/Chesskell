@@ -21,6 +21,7 @@ import Chess.Figures
 import Chess.CoreMovement
 import Chess.Metrics
 import Chess.Game
+import Data.Maybe(catMaybes)
 import Test.HUnit
 
 -- Movement does not work if the kings are endangered! 
@@ -29,7 +30,7 @@ safeKings :: Board
 safeKings = [Chesspiece King (1,1) W, Chesspiece King (8,8) B]
 
 countMoves :: [Maybe Board] -> Int 
-countMoves = length . demaybefy
+countMoves = length . catMaybes
 
 addPiece :: Board -> Chesspiece -> Board 
 addPiece b p = p : b
