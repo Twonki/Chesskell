@@ -11,6 +11,7 @@ import Tests.Game.FairMetricTests
 import Tests.Core.MissingPiecesTests
 import Tests.Game.CheckTests
 import Tests.Game.PawnReplacementTests
+import Tests.Game.GameTests
 import Tests.Movement.MovementTests
 import Tests.Core.CoreMovementTests
 import Tests.Core.MoveToTests
@@ -27,6 +28,7 @@ allTests = TestList [
    ,TestLabel "Core Movement Tests" allCoreMovementTests
    ,TestLabel "Movement Tests" allMovementTests
    ,TestLabel "Move To Tests" allMoveToTests
+   ,TestLabel "GameState Tests" allGameTests
    ]
 
 tests = hUnitTestToTests allTests

@@ -57,6 +57,7 @@ Test-Suite HUnitTestSuite
                        Tests.Core.MissingPiecesTests,
                        Tests.Movement.MovementTests,
                        Tests.Game.PawnReplacementTests,
+                       Tests.Game.GameTests,
                        Tests.Movement.PawnTests,
                        Tests.Core.MoveToTests,
                        Tests.TestSuite
