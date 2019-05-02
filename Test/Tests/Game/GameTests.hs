@@ -7,6 +7,7 @@ allGameTests = TestList [
     ,TestLabel "Valid Black Turn" testValidBlackTurn
     ,TestLabel "Invalid White Move - No Figure" testInvalidFigureWhiteTurn
     ,TestLabel "Invalid White Move - Not Reachable" testInvalidMoveWhiteTurn
+    ,TestLabel "Invalid White Move - Blocked" testInvalidMoveWhiteTurn2
     ,TestLabel "InitialState is InitialBoard + White Player" testInitialGameState
     ,TestLabel "Can Pickup White" testValidPickupWhite
     ,TestLabel "Can PickUp Black" testValidPickupWhite
@@ -37,6 +38,13 @@ invalidMoveWhiteMove = ((2,7),(2,3))
 testInvalidMoveWhiteTurn =
     True ~=? 
         whiteState == (movePiece whiteState invalidMoveWhiteMove)
+
+-- There is a Figure, but it cannot move like that
+invalidMoveWhiteMove2 = ((1,8),(4,4))
+testInvalidMoveWhiteTurn2 =
+    True ~=? 
+        whiteState == (movePiece whiteState invalidMoveWhiteMove2)
+
 
 testInitialGameState =
     True ~=? 
