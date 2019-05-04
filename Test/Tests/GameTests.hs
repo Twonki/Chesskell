@@ -1,4 +1,4 @@
-module Tests.Game.GameTests (allGameTests) where
+module Tests.GameTests (allGameTests) where
 
 import Tests.TestSuite
 
@@ -13,6 +13,8 @@ allGameTests = TestList [
     ,TestLabel "Can PickUp Black" testValidPickupWhite
     ,TestLabel "Cannot Pickup Enemy" testInvalidPickupFigure
     ,TestLabel "Cannot PickUp Empty Tile" testInvalidPickupNoFigure
+    ,TestLabel "Intitial Board Tests" allBoardTests
+    ,TestLabel "Fair Metrics Tests" allFairMetricTests
     ]
 
 whiteState = (initialBoard,W)
@@ -60,4 +62,38 @@ testInvalidPickupFigure =
     False ~=? canPickUp (2,2) whiteState 
 
 testInvalidPickupNoFigure = 
-    False ~=? canPickUp (5,5) whiteState 
+    False ~=? canPickUp (5,5) whiteState
+
+
+allBoardTests = TestList [
+    TestLabel "All Initial Moves Black" testInitialMovesBlack
+    ,TestLabel "All Initial Moves White" testInitialMovesWhite
+    ,TestLabel "Figure Count White" testInitialFiguresWhite
+    ,TestLabel "Figure Count Black" testInitialFiguresBlack 
+    ,TestLabel "No Check White" testInitialNoCheckWhite
+    ,TestLabel "No Check Black" testInitialNoCheckBlack
+        ]
+-- 20 StartingMoves Black
+testInitialMovesBlack = 20 ~=? length (validMoves initialBoard B)
+-- 20 StartingMoves White 
+testInitialMovesWhite = 20 ~=? length (validMoves initialBoard W)
+-- 16 Starting Figures for White
+testInitialFiguresWhite = 16 ~=? length (piecesForPlayer initialBoard W)
+-- 16 Starting Figures for Black
+testInitialFiguresBlack = 16 ~=? length (piecesForPlayer initialBoard B)
+-- White doesn't start in Check 
+testInitialNoCheckWhite = False ~=? check initialBoard W
+-- Black doesn't start in Check 
+testInitialNoCheckBlack = False ~=? check initialBoard B
+
+
+
+allFairMetricTests = TestList [
+    TestLabel "Fair Simple" testFairSimpleMetric
+    ,TestLabel "Fair RatedSimple" testFairRatedSimpleMetric
+    ,TestLabel "Fair Agility" testFairAgilityMetric
+    ]
+
+testFairSimpleMetric = True ~=? (simple initialBoard W) == (simple initialBoard B)
+testFairRatedSimpleMetric = True ~=? (ratedSimple initialBoard W) == (ratedSimple initialBoard B)
+testFairAgilityMetric = True ~=? (agility initialBoard W) == (agility initialBoard B)

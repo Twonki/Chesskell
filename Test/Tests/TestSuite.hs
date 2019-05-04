@@ -14,6 +14,7 @@ module Tests.TestSuite (
     addKnight,
     addTower,
     addPiece,
+    fromJust',
     removeFigure
 )where
 import Chess.Movement
@@ -58,3 +59,8 @@ addQueen b p c = addPiece b (Chesspiece Queen p c)
 
 removeFigure :: Board -> Pos -> Board 
 removeFigure b p = filter (\cp -> pos cp /= p) b
+
+
+fromJust' :: Maybe Board -> Board 
+fromJust' (Just b) = b 
+fromJust' Nothing = []
