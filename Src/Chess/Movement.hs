@@ -9,7 +9,6 @@ module Chess.Movement (
     replacePawn
 )where
 
-import Data.List.Split (splitOn)
 import Chess.Figures
 import Chess.CoreMovement
 import Control.Monad((>>=), join)
