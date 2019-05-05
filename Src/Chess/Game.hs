@@ -26,9 +26,14 @@ movePiece g@(b,c) (s,e) =
         if canPickUp s g
         then case f of
                 (Just f') ->
-                        let  m = moveTo b f' e
+                        let 
+                            vs = validMoves b c 
+                            m = moveTo b f' e
                         in case m of 
-                            Just m' -> (m',changePlayer c) 
+                            Just m' -> 
+                                if m' `elem` vs 
+                                then (m',changePlayer c)
+                                else g 
                             otherwise -> g
                 otherwise -> g 
         else g -- Someone Tried to do something invalid - nothing happens
