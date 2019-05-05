@@ -11,35 +11,35 @@ onBoard (x,y) = elem x reach && elem y reach
 
 reach = [1..8]
 reach' :: [Pos]
-reach' = zipWith (,) reach reach
+reach' = zip reach reach
 
 line ::(Pos->Pos->Pos) -> Pos -> [Pos]
-line f p = (f p) <$> reach' 
+line f p = f p <$> reach' 
 
 -- All positions moving 0 +
 ups :: Pos -> [Pos]
-ups = line (\(x,y)-> \(i,_)->(x,y+i))
+ups = line (\(x,y)(i,_)->(x,y+i))
 -- All positions moving 0 - 
 downs :: Pos -> [Pos] 
-downs = line (\(x,y)-> \(i,_)->(x,y-i))
+downs = line (\(x,y)(i,_)->(x,y-i))
 -- All Positions moving - 0
 lefts :: Pos -> [Pos]
-lefts  = line (\(x,y)-> \(i,_)->(x-i,y))
+lefts  = line (\(x,y)(i,_)->(x-i,y))
 -- All positions moving + 0 
 rights :: Pos -> [Pos]
-rights = line (\(x,y)-> \(i,_)->(x+i,y))
+rights = line (\(x,y)(i,_)->(x+i,y))
 -- All Positions moving - +
 risingDigL :: Pos -> [Pos]
-risingDigL = line (\(x,y)-> \(a,b)->(x-a,y+b))
+risingDigL = line (\(x,y)(a,b)->(x-a,y+b))
 -- All Positions moving + +
 risingDigR :: Pos -> [Pos]
-risingDigR = line (\(x,y)-> \(a,b)->(x+a,y+b))
+risingDigR = line (\(x,y)(a,b)->(x+a,y+b))
 -- All positions moving - - 
 fallingDigL :: Pos -> [Pos]
-fallingDigL = line (\(x,y)-> \(a,b)->(x-a,y-b)) 
+fallingDigL = line (\(x,y)(a,b)->(x-a,y-b)) 
 -- All positions moving + -  
 fallingDigR :: Pos -> [Pos]
-fallingDigR  = line (\(x,y)-> \(a,b)->(x+a,y-b))
+fallingDigR  = line (\(x,y)(a,b)->(x+a,y-b))
 
 -- This function stops at (x,y) if it is in the positionlist
 -- The Point (x,y) is still included
@@ -54,10 +54,10 @@ stopAtNearest :: [Pos] -> [Pos] -> [Pos]
 stopAtNearest xs ss = minimumBy (compare`on`length) $ stopAt xs <$> ss
 
 knightMoves :: Pos -> [[Pos]]
-knightMoves (x,y) = [[(x+dx,y+dy)] | dx <-[1,(-1),2,(-2)] , dy <- [1,(-1),2,(-2)], distance' dx dy==3]
+knightMoves (x,y) = [[(x+dx,y+dy)] | dx <-[1,-1,2,-2] , dy <- [1,-1,2,-2], distance' dx dy==3]
 
 kingMoves :: Pos -> [[Pos]]
-kingMoves (x,y) = [[(x+dx,y+dy)] | dx <- [0,1,(-1)],dy <- [0,1,(-1)], distance' dx dy > 0]
+kingMoves (x,y) = [[(x+dx,y+dy)] | dx <- [0,1,-1],dy <- [0,1,-1], distance' dx dy > 0]
 
 bishopMoves :: Pos -> [[Pos]]
 bishopMoves p= fmap ($p) [risingDigL,fallingDigR,risingDigR,fallingDigL]
@@ -90,8 +90,8 @@ possibleMoves (Chesspiece t p _) =
 -- stopAtNearest takes positions -> stoppers -> positions
 -- For my use it needs to be flipped
 moveFilter :: Board -> [Pos] -> [Pos]            
-moveFilter b = (flip stopAtNearest) (takenPositions b) . filter onBoard
+moveFilter b = flip stopAtNearest (takenPositions b) . filter onBoard
 
 add (x,y) (a,b) = (x+a,y+b)
 jumpWidth (a,b) = distance' a b
-distance' a b = abs(a)+abs(b)
+distance' a b = abs a +abs b 
