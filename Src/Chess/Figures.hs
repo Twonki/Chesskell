@@ -19,7 +19,7 @@ type Board = [Chesspiece]
 
 pieceOnPos :: Board -> Pos -> Maybe Chesspiece
 pieceOnPos b t = 
-        if candidate == []
+    if null candidate 
         then Nothing 
         else Just $ head candidate
     where candidate = filter (\cp -> pos cp == t) b
@@ -41,7 +41,7 @@ printCell :: Board -> Pos -> String
 printCell b p = 
     case mpiece of 
         Nothing -> "|____"
-        Just n  -> "|"++(show n)
+        Just n  -> "|"++ show n
     where mpiece = pieceOnPos b p 
 
 changePlayer :: Player -> Player 
@@ -51,16 +51,16 @@ changePlayer B = W
 -- Sets a Chesspiece to a new pos 
 -- Regardless whether it's allowed to perform this move or if there is anything
 draw :: Chesspiece -> Pos -> Chesspiece
-draw f t = Chesspiece {typ = (typ f),pos=t,player=(player f)}
+draw f t = Chesspiece {typ = typ f ,pos=t,player= player f}
 
 takenPositions :: Board -> [Pos]
-takenPositions = map (\t->pos t)
+takenPositions = map pos
 
 removePiece :: Board -> Chesspiece -> Board
-removePiece b p = filter (\c->c/=p) b  
+removePiece b p = filter (/=p) b  
 
 hasKing :: [Chesspiece] -> Bool
-hasKing = or . map (\(Chesspiece f _ _) -> f == King)
+hasKing = any (\(Chesspiece f _ _) -> f == King)
 
 -- A Chesspiece can move "onto" another Chesspiece if it has a different colour
 canAttack :: Chesspiece -> Chesspiece -> Bool
@@ -81,7 +81,7 @@ missingPieces b p = mask  difs pieces -- i select all figures where i don't have
         numberIfFull f | f==Pawn = 8 | f==King = 1 | f==Queen = 1 | otherwise = 2
         pieces = [Pawn,Bishop,Knight,Tower,Queen,King] --a full set of figures
         pBoard = typ <$> piecesForPlayer b p 
-        nums = (\x-> length (filter (\a->a == x) pBoard)) <$> pieces -- the amount of figures i have for each type
+        nums = (\x-> length (filter (==x) pBoard)) <$> pieces -- the amount of figures i have for each type
         expectedNums = numberIfFull <$> pieces -- the normal amount of figures a full set would have
         difs = zipWith (/=) nums expectedNums  -- Bool-List if i have as many figures as i could max have
 
@@ -94,7 +94,7 @@ initialBoard =
     ++ [Chesspiece Queen (4,1) B , Chesspiece Queen (5,8) W] ++ [Chesspiece King (5,1) B , Chesspiece King (4,8) W]
 
 mask :: [Bool] -> [a] -> [a]
-mask bs xs = [x | (b,x) <- (zipWith (,) bs xs) ,b == True]
+mask bs xs = [x | (b,x) <- zip bs xs , b ]
 
 shortName :: Figure -> String 
 shortName f | f== Pawn = "P" | f == Bishop = "B" | f==Queen = "Q" | f==King = "K"| f==Knight = "H" | f==Tower = "T"
