@@ -75,13 +75,10 @@ free :: Pos -> Board -> Bool
 free p b = isNothing $ pieceOnPos b p 
 
 missingPieces :: Board -> Player -> [Figure]
-missingPieces b p = mask pieces difs -- i select all figures where i don't have as many as i should have
+missingPieces b p = mask  difs pieces -- i select all figures where i don't have as many as i should have
     where
         numberIfFull:: Figure -> Int 
-        numberIfFull Pawn = 8
-        numberIfFull King = 1 
-        numberIfFull Queen = 1
-        numberIfFull _ = 2
+        numberIfFull f | f==Pawn = 8 | f==King = 1 | f==Queen = 1 | otherwise = 2
         pieces = [Pawn,Bishop,Knight,Tower,Queen,King] --a full set of figures
         pBoard = typ <$> piecesForPlayer b p 
         nums = (\x-> length (filter (\a->a == x) pBoard)) <$> pieces -- the amount of figures i have for each type
@@ -90,28 +87,17 @@ missingPieces b p = mask pieces difs -- i select all figures where i don't have 
 
 initialBoard :: Board 
 initialBoard = 
-    [Chesspiece Pawn (x,7) W | x <- [1..8]] 
-    ++ [Chesspiece Pawn (x,2) B | x <- [1..8]]
+    [Chesspiece Pawn (x,7) W | x <- [1..8]] ++ [Chesspiece Pawn (x,2) B | x <- [1..8]]
     ++ [Chesspiece Tower (1,1) B,Chesspiece Tower (8,1) B,Chesspiece Tower (1,8) W,Chesspiece Tower (8,8) W]
     ++ [Chesspiece Knight (2,1) B,Chesspiece Knight (7,1) B,Chesspiece Knight (2,8) W,Chesspiece Knight (7,8) W]
     ++ [Chesspiece Bishop (3,1) B,Chesspiece Bishop (6,1) B,Chesspiece Bishop (3,8) W,Chesspiece Bishop (6,8) W]
-    ++ [Chesspiece Queen (4,1) B , Chesspiece Queen (5,8) W]
-    ++ [Chesspiece King (5,1) B , Chesspiece King (4,8) W]
+    ++ [Chesspiece Queen (4,1) B , Chesspiece Queen (5,8) W] ++ [Chesspiece King (5,1) B , Chesspiece King (4,8) W]
 
-mask :: [a] -> [Bool] -> [a]
-mask [] [] = []
-mask a@(ah:as) b@(bh:bs)  
-    | length a /= length b = error "missmatch in masking"
-    | otherwise = if bh then ah:(mask as bs) else mask as bs  
+mask :: [Bool] -> [a] -> [a]
+mask bs xs = [x | (b,x) <- (zipWith (,) bs xs) ,b == True]
 
 shortName :: Figure -> String 
-shortName Pawn = "P"
-shortName Bishop = "B"
-shortName Queen = "Q"
-shortName King = "K"
-shortName Knight = "H"
-shortName Tower = "T"
+shortName f | f== Pawn = "P" | f == Bishop = "B" | f==Queen = "Q" | f==King = "K"| f==Knight = "H" | f==Tower = "T"
 
 smallColor :: Player -> String 
-smallColor W = "w"
-smallColor B = "b"
+smallColor c | c==W = "w" | c==B = "b"

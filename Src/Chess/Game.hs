@@ -5,7 +5,6 @@ module Chess.Game (
     movePiece,
     canPickUp,
     lost,
-    won,
     showBoard,
     initialGameState
 )
@@ -27,27 +26,29 @@ movePiece g@(b,c) (s,e) =
         if canPickUp s g
         then case f of
                 (Just f') ->
-                        let  m = moveTo b f' e
+                        let 
+                            vs = validMoves b c 
+                            m = moveTo b f' e
                         in case m of 
-                            Just m' -> (m',changePlayer c) 
+                            Just m' -> 
+                                if m' `elem` vs 
+                                then (m',changePlayer c)
+                                else g 
                             otherwise -> g
                 otherwise -> g 
         else g -- Someone Tried to do something invalid - nothing happens
     where f = pieceOnPos b s
 
 canPickUp:: Pos -> GameState -> Bool 
-canPickUp p (b,c) = demaybiebool $ fmap (((==) c) . player) f
+canPickUp p (b,c) = 
+    case f of 
+        Nothing -> False 
+        Just f' -> c == (player f')
     where f = pieceOnPos b p
 
--- Helpers 
 lost :: GameState -> Player -> Bool 
 lost g@(b,c) c' = checkmate b c'
-won g c = lost g (changePlayer c)
 
 initialGameState = (initialBoard,W)
-
-demaybiebool :: Maybe Bool -> Bool 
-demaybiebool Nothing = False 
-demaybiebool (Just x) = x
 
 showBoard = printBoard

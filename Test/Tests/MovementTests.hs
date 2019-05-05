@@ -1,4 +1,4 @@
-module Tests.Movement.MovementTests (allMovementTests) where
+module Tests.MovementTests (allMovementTests) where
 
 import Tests.TestSuite
 

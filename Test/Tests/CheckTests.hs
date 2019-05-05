@@ -1,6 +1,12 @@
-module Tests.Game.CheckTests (checkTests,checkMateTests,checkLimitedMoveTests) where
+module Tests.CheckTests (allCheckTests) where
 
 import Tests.TestSuite
+
+allCheckTests = TestList [
+    TestLabel "CheckTests" checkTests
+    ,TestLabel "CheckmateTests" checkMateTests
+    ,TestLabel "Check Movement Limitation Tests" checkLimitedMoveTests 
+    ]
 
 checkTests = TestList [
     TestLabel "No Initial Check White" testNoInitialCheckWhite
