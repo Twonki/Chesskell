@@ -36,13 +36,23 @@ whiteState = (initialBoard,W)
 -- I move a single pawn
 validWhiteMove = ((2,7),(2,5))
 testValidWhiteTurn = True ~=? whiteState /= (movePiece whiteState validWhiteMove)
-validWhiteKnightOpener = ((1,7),(3,6))
-testValidWhiteKnightOpener = True ~=? whiteState /= (movePiece whiteState validWhiteKnightOpener)
+
+-- I Move a White Knight as Opener
+validWhiteKnightOpener = ((2,8),(3,6))
+testValidWhiteKnightOpener = 
+    True ~=? 
+        whiteState /= (movePiece whiteState validWhiteKnightOpener)
+
 -- I move a single pawn
 validBlackMove = ((2,2),(2,4))
-testValidBlackTurn = True ~=? blackState /= (movePiece blackState validBlackMove)
-validBlackKnightOpener = ((8,7),(6,6))
-testValidBlackKnightOpener = True ~=? blackState /= (movePiece blackState validBlackKnightOpener)
+testValidBlackTurn = 
+    True ~=? blackState /= (movePiece blackState validBlackMove)
+
+-- I move a Black Knight as Opener
+validBlackKnightOpener = ((2,1),(3,3))
+testValidBlackKnightOpener = 
+    True ~=? 
+        blackState /= (movePiece blackState validBlackKnightOpener)
 
 -- There is no Figure on this tile
 invalidFigureWhiteMove = ((3,3),(5,2))
