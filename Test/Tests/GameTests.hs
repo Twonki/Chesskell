@@ -35,79 +35,79 @@ blackState = (initialBoard,B)
 whiteState = (initialBoard,W)
 -- I move a single pawn
 validWhiteMove = ((2,7),(2,5))
-testValidWhiteTurn = True ~=? whiteState /= (movePiece whiteState validWhiteMove)
+testValidWhiteTurn = True ~=? whiteState /= movePiece whiteState validWhiteMove
 
 -- I Move a White Knight as Opener
 validWhiteKnightOpener = ((2,8),(3,6))
 testValidWhiteKnightOpener = 
     True ~=? 
-        whiteState /= (movePiece whiteState validWhiteKnightOpener)
+        whiteState /= movePiece whiteState validWhiteKnightOpener
 
 -- I move a single pawn
 validBlackMove = ((2,2),(2,4))
 testValidBlackTurn = 
-    True ~=? blackState /= (movePiece blackState validBlackMove)
+    True ~=? blackState /= movePiece blackState validBlackMove
 
 -- I move a Black Knight as Opener
 validBlackKnightOpener = ((2,1),(3,3))
 testValidBlackKnightOpener = 
     True ~=? 
-        blackState /= (movePiece blackState validBlackKnightOpener)
+        blackState /= movePiece blackState validBlackKnightOpener
 
 -- There is no Figure on this tile
 invalidFigureWhiteMove = ((3,3),(5,2))
 testInvalidFigureWhiteTurn = 
     True ~=? 
-        whiteState == (movePiece whiteState invalidFigureWhiteMove)
+        whiteState == movePiece whiteState invalidFigureWhiteMove
 
 -- There is a Figure, but it cannot move like that
 invalidMoveWhiteMove = ((2,7),(2,3))
 testInvalidMoveWhiteTurn =
     True ~=? 
-        whiteState == (movePiece whiteState invalidMoveWhiteMove)
+        whiteState == movePiece whiteState invalidMoveWhiteMove
 
 -- There is a Figure, but it cannot move like that
 invalidMoveWhiteMove2 = ((1,8),(4,4))
 testInvalidMoveWhiteTurn2 =
     True ~=? 
-        whiteState == (movePiece whiteState invalidMoveWhiteMove2)
+        whiteState == movePiece whiteState invalidMoveWhiteMove2
 
 
 -- There is no Figure on this tile
 invalidFigureBlackMove = ((3,3),(5,2))
 testInvalidFigureBlackTurn = 
     True ~=? 
-        blackState == (movePiece blackState invalidFigureBlackMove)
+        blackState == movePiece blackState invalidFigureBlackMove
 
 -- There is a Figure, but it cannot move like that
 invalidMoveBlackMove = ((2,2),(2,6))
 testInvalidMoveBlackTurn =
     True ~=? 
-        blackState == (movePiece blackState invalidMoveBlackMove)
+        blackState == movePiece blackState invalidMoveBlackMove
 
 -- There is a Figure, but it cannot move like that
 invalidMoveBlackMove2 = ((8,1),(4,4))
 testInvalidMoveBlackTurn2 =
     True ~=? 
-        blackState == (movePiece blackState invalidMoveBlackMove2)
+        blackState == movePiece blackState invalidMoveBlackMove2
 
 -- I want to move the white Tower out of the Board
 invalidMoveWhiteOutofBoard = ((1,8),(1,9))
 testInvalidMoveWhiteOutofBoard =
     True ~=? 
-        whiteState == (movePiece whiteState invalidMoveWhiteOutofBoard)
+        whiteState == movePiece whiteState invalidMoveWhiteOutofBoard
 
 -- I want to move the white Tower out of the Board and pass many Figures on the way (Way should be blocked)
 invalidMoveWhiteOutofBoardThroughBoard = ((1,8),(9,8))
 testInvalidMoveWhiteOutofBoardThroughBoard =
     True ~=? 
-        whiteState == (movePiece whiteState invalidMoveWhiteOutofBoardThroughBoard)
+        whiteState == movePiece whiteState invalidMoveWhiteOutofBoardThroughBoard
 
 -- I want to move the white tower out of the board on a negative position        
 invalidMoveWhiteOutofBoardNegativePos = ((1,8),(-4,8))
 testInvalidMoveWhiteOutofBoardNegativePos =
     True ~=? 
-        whiteState == (movePiece whiteState invalidMoveWhiteOutofBoardNegativePos)
+        whiteState == movePiece whiteState invalidMoveWhiteOutofBoardNegativePos
 
 -- Have my State as i expect it to be 
 testInitialGameState =
@@ -205,6 +205,9 @@ allFairMetricTests = TestList [
 
 -- All Tests Check whether both parties have the same metric in initial state
 
-testFairSimpleMetric = True ~=? (simple initialBoard W) == (simple initialBoard B)
-testFairRatedSimpleMetric = True ~=? (ratedSimple initialBoard W) == (ratedSimple initialBoard B)
-testFairAgilityMetric = True ~=? (agility initialBoard W) == (agility initialBoard B)
+testFairSimpleMetric = True ~=? 
+    simple initialBoard W == simple initialBoard B
+testFairRatedSimpleMetric = True ~=? 
+    ratedSimple initialBoard W == ratedSimple initialBoard B
+testFairAgilityMetric = True ~=? 
+    agility initialBoard W == agility initialBoard B
