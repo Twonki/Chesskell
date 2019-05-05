@@ -72,12 +72,12 @@ testHorizontalCheckBlockedMoves = 2 ~=? length (validMoves hoizontalCheckBlocked
 verticalCheckBlocked = addTower safeKings (6,8) W
 testVerticalCheckBlockedMoves = 2 ~=? length (validMoves verticalCheckBlocked B) 
 
-strikableAggressor = (addTower safeKings (8,7) W)
+strikableAggressor = addTower safeKings (8,7) W
 -- The King can either move away or strike the tower, however i cannot move diagonally as it would mean another check
 testAttackMovesStillWork = 2 ~=? length (validMoves strikableAggressor B)
 
 -- A Queen Guards the Agressing Tower
-coveredAggressor = (addQueen strikableAggressor (7,6) W)
+coveredAggressor = addQueen strikableAggressor (7,6) W
 -- The King cannot move onto the Tower
 testAggressorIsCovered = 0 ~=? length (validMoves coveredAggressor B)
 -- That means he is in checkmate

@@ -127,7 +127,7 @@ allmissing = addPawn safeKings (4,2) W
 -- 1 Staying as Pawn
 testAllMissingReplace = 8 ~=? length ( validMoves allmissing  W )
 -- There will never be more than 3 Figures if i replace one
-testPieceCountStaysSame = True ~=? (all ((==) 3) $ map (length) ( validMoves allmissing  W ))
+testPieceCountStaysSame = True ~=? all (3 == ) (map length (validMoves allmissing W))
 
 -- now i check with two pawns which can possibly finish
 allmissingDoubleFinishers = addPawn allmissing (5,2) W
@@ -138,7 +138,7 @@ allmissingDoubleFinishers = addPawn allmissing (5,2) W
 -- 2 Staying as Pawns
 testAllMissingReplaceWithDoubleFinishers = 13 ~=? length ( validMoves allmissingDoubleFinishers  W )
 -- There will never be more than 4 Figures if i replace one
-testPieceCountStaysSameWithDoubleFinishers = True ~=? (all ((==) 4) $ map (length) ( validMoves allmissingDoubleFinishers  W ))
+testPieceCountStaysSameWithDoubleFinishers = True ~=? all (4 ==) (map length ( validMoves allmissingDoubleFinishers  W ))
 
 -- Test the AntiThesis, if i cannot replace everything behaves normal
 noreplacers = addPawn safeKings (4,3) W
@@ -147,14 +147,14 @@ noreplacers = addPawn safeKings (4,3) W
 -- 1 Move from Pawn
 testNoReplacerMoves = 4 ~=? length ( validMoves noreplacers  W )
 -- There will never be more than 3 Figures if i replace one
-testNoReplacerMovesPiececount = True ~=? (all ((==) 3) $ map (length) ( validMoves noreplacers  W ))
+testNoReplacerMovesPiececount = True ~=? all (3 ==) (map length ( validMoves noreplacers  W ))
 
 
 finisherWhite = Chesspiece Pawn (5,8) W
 finisherBoardWhite = finisherWhite : safeKings
 
 testWhiteReplacer = 5 ~=? length (replacePawn finisherBoardWhite finisherWhite)
-testWhiteReplacerPieceCount = True ~=? (all ((==) 3) $ length <$> options)
+testWhiteReplacerPieceCount = True ~=? all (3==) (length <$> options)
     where options = replacePawn finisherBoardWhite finisherWhite
 
 
@@ -162,5 +162,5 @@ finisherBlack = Chesspiece Pawn (5,1) B
 finisherBoardBlack = finisherBlack : safeKings
 
 testBlackReplacer = 5 ~=? length (replacePawn finisherBoardBlack finisherBlack)
-testBlackReplacerPieceCount = True ~=? (all ((==) 3) $ length <$> options)
+testBlackReplacerPieceCount = True ~=? all (3==) (length <$> options)
     where options = replacePawn finisherBoardBlack finisherBlack

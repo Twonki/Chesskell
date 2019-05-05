@@ -26,7 +26,7 @@ testKingCorneredFiltered = 3 ~=? length filteredMoves'
     where 
         posmoves = kingMoves (8,8)
         singularBoard = [Chesspiece King (8,8) W] -- Board with only my Knight
-        filteredMoves = (moveFilter singularBoard) <$> posmoves
+        filteredMoves = moveFilter singularBoard <$> posmoves
         filteredMoves' = join filteredMoves
 
 allKnightCoreMoves = TestList [
@@ -39,9 +39,9 @@ testFreeKnight = 8 ~=? length (knightMoves (5,5))
 testKnightCorneredNotFiltered = 8 ~=? length (knightMoves (8,8))
 testKnightCorneredFiltered = 2 ~=? length filteredMoves'
     where 
-        posmoves = (knightMoves (8,8))
+        posmoves = knightMoves (8,8)
         singularBoard = [Chesspiece Knight (8,8) W] -- Board with only my Knight
-        filteredMoves = (moveFilter singularBoard) <$> posmoves
+        filteredMoves = moveFilter singularBoard <$> posmoves
         filteredMoves' = join filteredMoves
 
 allLines = TestList [
@@ -66,8 +66,8 @@ testLeftRisingDigsCount = 8 ~=? length (risingDigL (5,5))
 testRightFallingDigsCount = 8 ~=? length (fallingDigR (5,5))
 testLeftFallingDigsCount = 8 ~=? length (fallingDigL (5,5))
 
-testNoVerticalSelfcontainment = False ~=? (5,5) `elem` (ups (5,5))
-testNoDiagonalSelfcontainment = False ~=? (5,5) `elem` (fallingDigL (5,5))
+testNoVerticalSelfcontainment = False ~=? (5,5) `elem` ups (5,5)
+testNoDiagonalSelfcontainment = False ~=? (5,5) `elem` fallingDigL (5,5)
 
 allStopAt = TestList [
     TestLabel "Stopped" testStopped,
@@ -135,7 +135,7 @@ allMoveToTests = TestList [
 -- A simple tower to perform these tests
 tower = Chesspiece Tower (5,5) W
 -- A Board with the single tower is my basecase
-base = tower:[]
+base = [tower]
 
 -- I can move here, it`s free
 testFreeField = False ~=? isNothing (moveTo base tower (5,6))
