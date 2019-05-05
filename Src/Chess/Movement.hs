@@ -33,7 +33,7 @@ moves :: Board -> Chesspiece -> [Maybe Board]
 moves b fig@(Chesspiece t _ _) 
     | t == Pawn = validPawnMoves b fig 
     | otherwise =
-        let validMoves = join $ moveFilter b' <$> possibleMoves fig
+        let validMoves = moveFilter b' =<< possibleMoves fig
         in moveTo b fig <$> validMoves
     where  b' = removePiece b fig
 
