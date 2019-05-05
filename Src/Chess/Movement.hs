@@ -52,7 +52,7 @@ validPawnMoves b fig@(Chesspiece Pawn p c)
                 replaceTuples =  (\p ->(draw fig p,moveTo b fig p)) <$> replacementPositions
                 replaceTuples' = [(a,b) | (a,Just b) <- replaceTuples]
                 doReplace (replacer,replacementBoard) = replacePawn replacementBoard replacer
-                replacementMoves = join $ doReplace <$> replaceTuples'
+                replacementMoves = doReplace  =<< replaceTuples'
             in  Just <$> replacementMoves
         | otherwise =  moveTo b fig <$> valids
     where 
@@ -81,7 +81,7 @@ check b p = or $ not . hasKing <$> myFigures
         myFigures = flip piecesForPlayer p <$> enemyMoves
 
 checkmate :: Board -> Player -> Bool
-checkmate b p = [] == validMoves b p
+checkmate b p = null $ validMoves b p
 
 replacePawn :: Board -> Chesspiece -> [Board]
 replacePawn b piece@(Chesspiece Pawn p c) = 
