@@ -29,7 +29,7 @@ ratedSimple b p
         blackValue = boardValue $ piecesForPlayer b B 
 
 boardValue :: Board -> Value 
-boardValue b = sum $ value' <$> (\x -> typ x) <$> b 
+boardValue b = sum (value' . typ <$> b ) 
 
 value' :: Figure -> Value
 value' Pawn = 1
