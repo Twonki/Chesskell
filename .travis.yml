@@ -2,7 +2,7 @@ sudo: true
 language: haskell
 
 git:
-  depth: 5
+  depth: 3
 
 cabal: "2.4"
 
@@ -18,7 +18,7 @@ install:
   - ghc --version
   - cabal --version
   - cabal new-update
-  - cabal new-build --enable-tests --enable-benchmarks
+  - cabal new-build --enable-tests
 
 script:
   - cabal new-test --enable-tests

@@ -29,8 +29,8 @@ executable Chesskell
   -- other-extensions:
 
   -- Other library packages from which modules are imported.
-  build-depends:       base ^>=4.9.0.0, 
-                       HUnit ^>=1.6.0.0,
+  build-depends:       base, 
+                       HUnit,
                        split ^>=0.2.3.3, 
                        Cabal
 
