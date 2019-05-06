@@ -1,7 +1,7 @@
 cabal-version:       2.4
 -- The name of the package.
 name:                Chesskell
-version:             0.5.0
+version:             0.5.1
 synopsis:            A Game of Chess on Console
 
 -- A URL where users can report bugs.
@@ -29,8 +29,8 @@ executable Chesskell
   -- other-extensions:
 
   -- Other library packages from which modules are imported.
-  build-depends:       base ^>=4.12.0.0, 
-                       HUnit ^>=1.6.0.0,
+  build-depends:       base, 
+                       HUnit,
                        split ^>=0.2.3.3, 
                        Cabal
 

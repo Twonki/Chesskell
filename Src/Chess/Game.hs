@@ -19,7 +19,7 @@ type GameState = (Board, Player)
 type Move = (Pos,Pos)
 
 changePlayer' :: GameState -> GameState
-changePlayer' = (\(b,p)->(b, changePlayer p))
+changePlayer' (b,p) = (b, changePlayer p)
 
 movePiece :: GameState -> Move ->  GameState
 movePiece g@(b,c) (s,e) = 
@@ -34,8 +34,8 @@ movePiece g@(b,c) (s,e) =
                                 if m' `elem` vs 
                                 then (m',changePlayer c)
                                 else g 
-                            otherwise -> g
-                otherwise -> g 
+                            _ -> g
+                _ -> g 
         else g -- Someone Tried to do something invalid - nothing happens
     where f = pieceOnPos b s
 
@@ -43,11 +43,11 @@ canPickUp:: Pos -> GameState -> Bool
 canPickUp p (b,c) = 
     case f of 
         Nothing -> False 
-        Just f' -> c == (player f')
+        Just f' -> c == player f'
     where f = pieceOnPos b p
 
 lost :: GameState -> Player -> Bool 
-lost g@(b,c) c' = checkmate b c'
+lost g@(b,c) = checkmate b
 
 initialGameState = (initialBoard,W)
 
