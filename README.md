@@ -1,5 +1,6 @@
 # Chesskell
-**A Game of Chess - made in Haskell** 
+
+## A Game of Chess - made in Haskell
 
 This repository contains my attempt on programming chess with Haskell.
 
@@ -9,7 +10,9 @@ Further steps should include AI with the help of alpha-beta-pruning.
 This game is never made to be in a computational-competetive enviroment. It's rather about producing nice haskellcode and having some fun with the most expressive language :)
 
 ## Build, Run and Test
+
 ### Interactive
+
 To run the code, go to /Src and start your GHCI. 
 
 `You@GHCI> :load Game.hs`
@@ -20,6 +23,7 @@ This will let you play the game. To manually inspect features, I recommend to go
 Part of the Unit-Tests is the *TestSuite.hs* which has a lot of useful functions and grants visibility on nearly every exposed item. 
 
 ### With Cabal
+
 You can build, test and run the game with Cabal. For more Information on the setup, see [the cabal file](Chesskell.cabal).
 
 ```
@@ -31,18 +35,23 @@ $ cabal new-install
 
 For the installation you need to have symlinks configured for your cabal. After that, you can invoke the game from anywhere on your machine. 
 
-If you're using windows, I highly recommend to change that. 
+If you're using windows, I highly recommend to change that.
+
+**Important: Use the new-command**-Syntax - otherwise it doesn't work at all.
+
 ## Structure
-The file *Game.hs* contains the toplevel entrypoint for playing the game and checking all it`s features. 
 
-The file *AllTests.hs* contains the toplevel entrypoint for running all tests at once. 
+The file *Game.hs* contains the toplevel entrypoint for playing the game and checking all it`s features.
 
-The folder *Tests* contain all tests, usually grouped by their functionality (not their src-file!). 
+The file *AllTests.hs* contains the toplevel entrypoint for running all tests at once.
+
+The folder *Tests* contain all tests, usually grouped by their functionality (not their src-file!).
 The tests are written with HUnit and there is an additional *TestSuite.hs* which simply puts all required visibilites in one import and enriches some helper functions. 
 
-The folder *src*: 
-* *Figures*: Contains the datatypes and some very basic operations on these datatypes. 
-* *CoreMovement*: Contains simple, board-unaware movements. The results of these movements will be later filtered. 
+The folder *src*:
+
+* *Figures*: Contains the datatypes and some very basic operations on these datatypes.
+* *CoreMovement*: Contains simple, board-unaware movements. The results of these movements will be later filtered.
 * *Movement*: Contains advanced, board-aware movements. Also in this file is the *allMoves* Method and the *check* + *checkMate*
 * *Metrics*: Contains different metrics to measure the value of a board
 * *AI*(ToBeDone): Contains the alpha-beta pruning
@@ -54,8 +63,10 @@ I think the best way to start reading is
 
 Figures.hs -> CoreMovement.hs -> Movement.hs -> Game.hs
 
-This way it gets more complex and the required things in movement are known. 
+This way it gets more complex and the required things in movement are known.
+
 ## Contribution
+
 You're contribution is welcome! There are several topics you can help with:
 
 * Chess related: I'm not totally sure about the Game itself, so if there is any flaw in possible movements, or other features of the real-life-chess missing, please open an issue!

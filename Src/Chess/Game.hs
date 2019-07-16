@@ -22,7 +22,9 @@ changePlayer' :: GameState -> GameState
 changePlayer' (b,p) = (b, changePlayer p)
 
 movePiece :: GameState -> Move ->  GameState
-movePiece g@(b,c) (s,e) = 
+movePiece g@(b,c) (s,e) =
+    let f = pieceOnPos b s
+    in
         if canPickUp s g
         then case f of
                 (Just f') ->
@@ -34,11 +36,12 @@ movePiece g@(b,c) (s,e) =
                                 if m' `elem` vs 
                                 then (m',changePlayer c)
                                 else g 
-                            _ -> g
-                _ -> g 
+                            Nothing -> g
+                Nothing -> g 
         else g -- Someone Tried to do something invalid - nothing happens
-    where f = pieceOnPos b s
 
+-- Just Tells whether a player can pickup the piece on a given position
+-- This is about to catch if someone wants to pickup an empty field or an enemy piece
 canPickUp:: Pos -> GameState -> Bool 
 canPickUp p (b,c) = 
     case f of 
