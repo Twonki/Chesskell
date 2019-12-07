@@ -1,23 +1,16 @@
-## Contribution
-### Branching Policy
-This Repo uses a shrunk form of the common [Git Flow](https://www.git-tower.com/learn/git/ebook/en/desktop-gui/advanced-topics/git-flow).
+# Contribution
 
-The central repo holds two main branches with an infinite lifetime: **master** and **dev**.
+Thanks for your interest! 
 
-* The **master** branch is the branch where the source code always reflects a production-ready state.
-* The **dev**elop branch is the branch where the source code always reflects a state with the latest delivered development changes for the next release.
-Feature branches are used to develop new features for the upcoming release. 
+As your help is highly appreciated, there are only two *hard constraints*:
 
-They are derived from the issue board. Every feature-branch is always created from the dev branch and will solely be remerged into dev.
+1. Be friendly and patient in issues, PRs and comments.
+2. Create code,commits and assets in english. 
 
-A feature-branch's lifetime should be as short as possible.
+But please consider also the following: 
 
-**Commits into the master are strictly forbidden** - always use a pull request.
-
-### Further information
-* Create code,commits and assets in English (only).
-* Note the number of your issue in your commit-messages to take full advtantage of the issueboard.
-* Assign yourself to an issue in the issue board.
-* If you are stuck at an issue, consider adding the Label Help Wanted.
-* Consider pushing your feature branches remote, so others can help or pick up your work. Tidy up when the issue is closed.
-* Close the issue only if your changes are visible to others (a remote branch is ok). 
+* Please try to stick to the PR-Template    
+* Comment on an Issue if you are working on it. If there is no issue for your idea yet, please feel free to open one.
+* If you are stuck at an issue, consider adding the Label Help Wanted and tag a contributor in the comments.
+* Either change code or CI/CD parts. If you want to change both, for stability please make two PRs.
+* Keep commit messages on the topic and meaningfull - consider using the commit-message-template.
