@@ -1,16 +1,17 @@
 # Chesskell
-**A Game of Chess - made in Haskell** 
+**A Game of Chess - made in Haskell**  [![Build](https://github.com/Twonki/Chesskell/workflows/HaskellCI/badge.svg)](https://github.com/Twonki/Hopinosis/actions) ![License: MIT](https://img.shields.io/badge/License-MIT-hotpink.svg)
+
 
 This repository contains my attempt on programming chess with Haskell.
 
 With the first steps I want to make a normal game of chess for two players on a single machine. 
 Further steps should include AI with the help of alpha-beta-pruning.
 
-This game is never made to be in a computational-competetive enviroment. It's rather about producing nice haskellcode and having some fun with the most expressive language :)
+This game is never made to be in a computational-competetive enviroment. It's rather about producing nice haskellcode and having some fun with the most expressive language :smile:
 
 ## Build, Run and Test
 ### Interactive
-To run the code, go to /Src and start your GHCI. 
+To run the code, go to /Src/Chess and start your GHCI. 
 
 `You@GHCI> :load Game.hs`
 
@@ -18,6 +19,13 @@ Should compile and load the Game. You can start the game with `You@Game> main`.
 
 This will let you play the game. To manually inspect features, I recommend to go to /Test and load the UnitTests. 
 Part of the Unit-Tests is the *TestSuite.hs* which has a lot of useful functions and grants visibility on nearly every exposed item. 
+
+**Optional:**
+You can run 
+
+`/Src> runghc Program.hs`
+
+Atleast this works for me. You have to have all cabal dependencies installed tho. 
 
 ### With Cabal
 You can build, test and run the game with Cabal. For more Information on the setup, see [the cabal file](Chesskell.cabal).
