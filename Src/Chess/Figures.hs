@@ -32,10 +32,13 @@ instance Show Chesspiece where
     --show c = "("++ smallColor (player c) ++shortName (typ c) ++ "@"++ show (pos c)++")" -- DEBUG 
 
 printBoard :: Board -> String 
-printBoard b = join [printLine b l | l<-[1..8]]
+printBoard b = header ++ boardPrint
+    where 
+        boardPrint = join [printLine b l ++ "|" ++ (show l) ++ "\n" | l<-[1..8]]
+        header = " " ++ join [" _"++(show i)++"_ " | i <- [1..8]] ++ "\n"
 
 printLine :: Board -> Int -> String 
-printLine b l = join $ "|\n":[printCell b (x,l)| x<-[1..8]] 
+printLine b l = join [printCell b (x,l)| x<-[1..8]]
 
 printCell :: Board -> Pos -> String
 printCell b p = 
